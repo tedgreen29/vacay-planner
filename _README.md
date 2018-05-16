@@ -4,9 +4,9 @@
 
 ## Team
 
-  - __Product Owner__: teamMember
-  - __Scrum Master__: teamMember
-  - __Development Team Members__: teamMember, teamMember
+  - __Product Owner__: Ted Green
+  - __Scrum Master__: Seth Shill
+  - __Development Team Members__: Debalina Mukherjee, Bo Ki Wong, Happy Situ, Ted Green, Seth Shill
 
 ## Table of Contents
 
