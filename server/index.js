@@ -8,13 +8,13 @@ const PORT = 3000;
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(express.static(__dirname + '/../react-client/dist'));
+app.use(express.static(__dirname + '/../client/dist'));
 
-app.get('/xxxx', (req, res) => {
+app.get('/', (req, res) => {
 
 });
 
-app.post('/xxxx', (req, res) => {
+app.post('/', (req, res) => {
 
 });
 

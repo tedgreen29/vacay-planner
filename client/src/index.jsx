@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import $ from 'jquery';
 
-import Component1 from './components/Component1.jsx';
-import Component2 from './components/Component2.jsx';
+import ExampleComponent from './components/ExampleComponent.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -18,7 +16,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-
+        <ExampleComponent />
       </div>
     );
   }
