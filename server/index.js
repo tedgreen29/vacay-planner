@@ -10,7 +10,7 @@ const PORT = 3000;
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/../client/dist'));
-
+app.use(express.static(__dirname + '/../client/media'));
 app.get('/', (req, res) => {
 
 });
