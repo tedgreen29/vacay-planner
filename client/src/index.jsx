@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import ExampleComponent from './components/ExampleComponent.jsx';
+import LandingPage from './components/LandingPage/LandingPage.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <ExampleComponent />
+        <LandingPage />
       </div>
     );
   }
