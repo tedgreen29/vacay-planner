@@ -1,0 +1,29 @@
+{
+  "name": "vacay-planner",
+  "version": "1.0.0",
+  "description": "app for planning vacation activities &amp; events",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server/index.js",
+    "dev:react": "webpack -d --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmukherjee/vacay-planner.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.3.2",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.23.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "webpack": "^2.2.1"
+  }
+}
