@@ -4,7 +4,7 @@ import LandingPageBody from './LandingPageBody.jsx';
 
 const LandingPage = (props) => (
   <div>
-    <NavBar />
+   {/* <NavBar /> */}
     <LandingPageBody />
   </div>
 );
