@@ -11,7 +11,15 @@ const PORT = 3000;
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/../client/dist'));
-app.use(express.static(__dirname + '/../client/media'));
+
+app.use('/media', express.static(__dirname + '/../client/media'));
+app.get('/', (req, res) => {
+
+});
+
+app.post('/', (req, res) => {
+
+});
 
 app.get('/ticketmaster', (req, res) => {
   var testDate1 = new Date('30 May 2018 00:00 UTC').toISOString().split('.')[0]+'Z';

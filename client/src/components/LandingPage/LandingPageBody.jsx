@@ -18,6 +18,7 @@ const LandingPageBody = (props) => (
               <input type="text" name="startDate" /><br />
               End Date:<br />
               <input type="text" name="endDate" /><br />
+              <input type="text" name="page" value="foodandevents" readOnly hidden /> {/*Temporary routing*/}
               <input type="submit" />
             </form>
           </Card.Content>
