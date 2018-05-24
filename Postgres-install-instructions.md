@@ -81,9 +81,9 @@ Run the following in psql:
 ## That's all for setup
 
 ### List of Useful Commands in psql#
-\? help
-\l list databases
-\c db_name - connect to database
-\q quits psql terminal
+`\?` help
+`\l` list databases
+`\c` db_name - connect to database
+`\q` quits psql terminal
 
 [other useful stuff](https://www.postgresql.org/docs/10/static/app-psql.html)
