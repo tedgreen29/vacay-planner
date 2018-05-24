@@ -39,21 +39,52 @@
     This should show something similar to the following:
     `mycomputeruser=#`
 
----------------------------------------------------------
-    if you've setup a password, use the following syntax:
-    `psql -d mydb -U myuser`
----------------------------------------------------------
-
-    You will need to setup a user to be able to access your DB so you don't use the root user (which is just ***bad form***)
+    You will need to setup a user to be able to access your DB so you don't use the root user (which is just *bad form*)
 
     Do so by running the following command:
     `CREATE USER username PASSWORD 'stringInQuotes';`
 
-    To check if your user was created:
+---------------------------------------------------------
+    ***Suggested***
+    `CREATE USER vacay PASSWORD 'planner';`
+---------------------------------------------------------
+
+    To check if your user was created, run the following in psql:
     `SELECT usename FROM pg_user;`
 
     **This username and password combination you will use with sequelize**
 
-##Creating Database and Schema##
+##Creating Database##
 
-    TBD
+    Run the following in psql:
+    `CREATE DATABASE my_db;`
+
+---------------------------------------------------------
+    ***Suggested***
+    `CREATE DATABASE vacay_planner;
+---------------------------------------------------------
+
+    To show your databases, run the following:
+    `\list`
+
+##Grant user Database Permissions##
+
+    Postgres Users must be granted access to your database, so while still logged in as root you'll need to grant permissions to your user so they can access your database
+
+    Run the following in psql:
+    `GRANT ALL PRIVILEGES ON DATABASE my_db TO user;`
+
+---------------------------------------------------------
+    ***Suggested***
+    `GRANT ALL PRIVILEGES ON DATABASE vacay_planner TO vacay;`
+---------------------------------------------------------
+
+##That's all for setup##
+
+###List of Useful Commands in psql###
+    \? help
+    \l list databases
+    \c db_name - connect to database
+    \q quits psql terminal
+
+    [other useful stuff](https://www.postgresql.org/docs/10/static/app-psql.html)
