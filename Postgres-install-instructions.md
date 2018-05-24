@@ -80,7 +80,7 @@ Run the following in psql:
 
 ## That's all for setup
 
-### List of Useful Commands in psql#
+### List of Useful Commands in psql
 `\?` help
 `\l` list databases
 `\c` db_name - connect to database
