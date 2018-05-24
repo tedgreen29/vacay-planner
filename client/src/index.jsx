@@ -1,7 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+
 import FoodAndEventsPage from './components/FoodAndEventsPage/FoodAndEventsPage.jsx';
 import LandingPage from './components/LandingPage/LandingPage.jsx';
+import SignUpPage from './components/SignUpPage/SignUpPage.jsx';
+import LoginPage from './components/LoginPage/LoginPage.jsx';
+
+const Router = BrowserRouter;
 
 class App extends React.Component {
   constructor(props) {
@@ -14,14 +20,16 @@ class App extends React.Component {
   //write functions
 
   render() {
-
-
-    //temporary routing (will change to React Router)
-    var url = new URL(window.location.href);
-    var page = url.searchParams.get("page");
-
-    return page === "foodandevents" ? <FoodAndEventsPage /> : <LandingPage />;
-
+    return (
+      <Router>
+        <div className='container'>
+          <Route exact path='/' component={LandingPage} />
+          <Route path='/login' component={LoginPage} />
+          <Route path='/signup' component={SignUpPage} />
+          <Route path='/foodandevents' component={FoodAndEventsPage} />
+        </div>
+      </Router>
+    )
   }
 }
 
