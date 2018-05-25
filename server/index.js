@@ -23,8 +23,6 @@ app.get('/ticketmaster', (req, res) => {
   var testDate1 = new Date('30 May 2018 00:00 UTC').toISOString().split('.')[0]+'Z';
   var testDate2 = new Date('30 October 2018 00:00 UTC').toISOString().split('.')[0]+'Z';
 
-  app.use
-
   console.log(testDate1);
   console.log(testDate2);
 
