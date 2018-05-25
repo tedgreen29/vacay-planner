@@ -3,7 +3,7 @@ import { Button, Card, Image, Icon } from 'semantic-ui-react'
 
 const EventsTabContent = () => (
   <Card.Group>
-    <Card>
+    <Card fluid>
       <Card.Content>
         <Image floated='right' size='mini' src='/media/mapAndAirplaneCoffee.jpg' />
         <Card.Header>
@@ -22,14 +22,14 @@ const EventsTabContent = () => (
         </div>
       </Card.Content>
     </Card>
-    <Card>
+    <Card fluid>
       <Card.Content>
         <Image floated='right' size='mini' src='/media/mapAndAirplaneCoffee.jpg' />
         <Card.Header>
           Event 2
         </Card.Header>
         <Card.Meta>
-          Rating 2
+          Rating 2 fluid
         </Card.Meta>
         <Card.Description>
           Description 2 <strong>Category 2</strong>
@@ -41,7 +41,7 @@ const EventsTabContent = () => (
         </div>
       </Card.Content>
     </Card>
-    <Card>
+    <Card fluid>
       <Card.Content>
         <Image floated='right' size='mini' src='/media/mapAndAirplaneCoffee.jpg' />
         <Card.Header>

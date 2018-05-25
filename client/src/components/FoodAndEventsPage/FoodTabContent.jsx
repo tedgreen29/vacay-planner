@@ -3,7 +3,7 @@ import { Button, Card, Image, Icon } from 'semantic-ui-react'
 
 const FoodTabContent = () => (
   <Card.Group>
-    <Card>
+    <Card fluid>
       <Card.Content>
         <Image floated='right' size='mini' src='/media/mapAndAirplaneCoffee.jpg' />
         <Card.Header>
@@ -22,7 +22,7 @@ const FoodTabContent = () => (
         </div>
       </Card.Content>
     </Card>
-    <Card>
+    <Card fluid>
       <Card.Content>
         <Image floated='right' size='mini' src='/media/mapAndAirplaneCoffee.jpg' />
         <Card.Header>
@@ -41,7 +41,7 @@ const FoodTabContent = () => (
         </div>
       </Card.Content>
     </Card>
-    <Card>
+    <Card fluid>
       <Card.Content>
         <Image floated='right' size='mini' src='/media/mapAndAirplaneCoffee.jpg' />
         <Card.Header>
