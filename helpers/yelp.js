@@ -1,7 +1,7 @@
-// const config = require('../config.js');
+const config = require('../config.js');
 const request = require('request');
 
-// const key = config.YELP_KEY
+const key = config.YELP_KEY
 
 module.exports = {
   getRestaurants: (location, callback) => {
