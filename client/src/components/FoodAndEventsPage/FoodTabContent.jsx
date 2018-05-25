@@ -5,7 +5,7 @@ const FoodTabContent = (props) => (
   <Card.Group>
     {props.restaurantList.map((restaurant) => {
       return (
-      <Card fluid>
+      <Card fluid key={restaurant.id}>
         <Card.Content>
           <Image floated='right' size='small' src={restaurant.image_url} />
           <Card.Header>
