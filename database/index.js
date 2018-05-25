@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const db = new Sequelize('vacay', 'planner', 'vacay_planner'{
+const db = new Sequelize('vacay_planner', 'vacay', 'planner', {
   host: 'localhost',
   dialect: 'postgres'
 })
@@ -16,4 +16,4 @@ db
 
 // const User = db.define()
 
-module.exports db;
+module.exports = db;
