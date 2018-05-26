@@ -1,5 +1,7 @@
 const request = require('request-promise');
-const key = require('./tm.config.js');
+const config = require('../config.js');
+
+const key = config.TM_KEY
 
 const tm = (options, cb) => {
   console.log(options)
