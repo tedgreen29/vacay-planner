@@ -19,12 +19,16 @@ const FoodTabContent = (props) => (
                 <span className='restaurant-rating'>Rating: { restaurant.rating } Stars</span>
               </Item.Meta>
               <Item.Description>
-                {restaurant.location.display_address.map(address => { 
+                { restaurant.location.display_address.map(address => { 
                    return address
-                }).join(', ')} 
+                }).join(', ') } 
               </Item.Description>
               <Item.Extra>
-                {restaurant.categories.map(category => { 
+                { restaurant.price ? 
+                  ( <span>{restaurant.price }</span> ) : '---'
+                }
+                <span style={ {paddingLeft: 5}}>{` ● `}</span>
+                <Icon name='food' fitted style={ {paddingLeft: 10}}/> {restaurant.categories.map(category => { 
                   return category.title
                 }).join(', ')}
                 <Button icon floated='right' basic color='red' style={ {marginRight: 20} } >
