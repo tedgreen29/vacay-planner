@@ -15,22 +15,20 @@ db
   });
 
 const User = db.define('users', {
-  id: { type: Sequelize.INTEGER, primaryKey: true },
+  id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
   email: {type: Sequelize.STRING, unique: true},
   password: Sequelize.STRING
 });
 
 const Trip = db.define('trips', {
-  id: { type: Sequelize.INTEGER, primaryKey: true },
-  userID: Sequelize.INTEGER,
+  id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
   start_date: Sequelize.DATE,
   end_date: Sequelize.DATE,
   tripName: Sequelize.STRING
 })
 
 const Restaurant = db.define('restaurants', {
-  id: { type: Sequelize.INTEGER, primaryKey: true },
-  tripID: Sequelize.INTEGER,
+  id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
   name: Sequelize.STRING,
   yelpURL: Sequelize.STRING,
   review_count: Sequelize.INTEGER,
@@ -41,8 +39,7 @@ const Restaurant = db.define('restaurants', {
 })
 
 const Event = db.define('event', {
-  id: { type: Sequelize.INTEGER, primaryKey: true },
-  tripID: Sequelize.INTEGER,
+  id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
   name: Sequelize.STRING,
   eventURL: Sequelize.STRING,
   startDate: Sequelize.DATE,
@@ -50,6 +47,62 @@ const Event = db.define('event', {
   venueName: Sequelize.STRING,
   venueLong: Sequelize.FLOAT,
   VenueLat: Sequelize.FLOAT
-})
+});
 
-module.exports = db;
+User.hasMany(Trip, {
+  foreignKey: {
+    allowNull: false
+  }
+});
+
+Trip.belongsTo(User, {
+  foreignKey: 'userID'
+});
+
+Trip.hasMany(Restaurant, {
+  foreignKey: {
+    name: 'tripID',
+    allowNull: false
+  }
+});
+
+Restaurant.belongsTo(Trip);
+
+Trip.hasMany(Event, {
+  foreignKey: {
+    name: 'tripID',
+    allowNull: false
+  }
+});
+
+Event.belongsTo(Trip);
+
+
+
+var dbHelpers = {
+  addUser: (obj) => {
+
+  },
+
+  findUser: (user) => {
+
+  },
+
+  getUserTrips: (user) => {
+
+  },
+
+  newTrip: (eventList, restaurantList) => {
+
+  },
+
+  newRestaurant: (restaurant) => {
+
+  },
+
+  newEvent: (event) => {
+
+  }
+}
+
+module.exports = dbHelpers;
