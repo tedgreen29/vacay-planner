@@ -35,7 +35,8 @@ const Restaurant = db.define('restaurants', {
   rating: Sequelize.INTEGER,
   price: Sequelize.STRING,
   restLong: Sequelize.FLOAT,
-  restLat: Sequelize.FLOAT
+  restLat: Sequelize.FLOAT,
+  categories: Sequelize.JSON
 })
 
 const Event = db.define('event', {
@@ -56,12 +57,11 @@ User.hasMany(Trip, {
 });
 
 Trip.belongsTo(User, {
-  foreignKey: 'userID'
+  allowNull: false
 });
 
 Trip.hasMany(Restaurant, {
   foreignKey: {
-    name: 'tripID',
     allowNull: false
   }
 });
@@ -70,14 +70,14 @@ Restaurant.belongsTo(Trip);
 
 Trip.hasMany(Event, {
   foreignKey: {
-    name: 'tripID',
     allowNull: false
   }
 });
 
 Event.belongsTo(Trip);
 
-
+//This long promise chain is required to make sure that all of the associations are setup properly.
+User.sync().then(() => Trip.sync().then(() => Restaurant.sync().then(() => Event.sync())));
 
 var dbHelpers = {
   addUser: (obj) => {
