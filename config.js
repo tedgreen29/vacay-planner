@@ -1,0 +1,7 @@
+var config = {
+  YELP_KEY: '01WYSZlKQc3pBPqgRSZWgvthUBRGQ9OUAz6GE8jMwrh1PDif7FZHB9_6QrtJ9aLsA9wB80KQ7NhcSpzVg2XbFY6wf20fM8eDqm-3dNBlE4OAEOuw41FLUTBktG8HW3Yx',
+  YELP_SECRET: 'p06OxGoooPLAZaSDM-LsQA'
+};
+
+
+module.exports = config;
