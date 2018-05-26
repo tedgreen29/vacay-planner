@@ -2,8 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const db = require('../database');
-const tm = require('../tm/tm.js');
-const helper = require('../helpers/yelp');
+const tm = require('../helpers/tm');
+const yelp = require('../helpers/yelp');
 
 const app = express();
 const PORT = 3000;
@@ -19,7 +19,8 @@ app.use('/foodandevents', express.static(homePath));
 app.use('/login', express.static(homePath));
 app.use('/signup', express.static(homePath));
 
-app.get('/ticketmaster', (req, res) => {
+// Get events list
+app.get('/events', (req, res) => {
   var testDate1 = new Date('30 May 2018 00:00 UTC').toISOString().split('.')[0]+'Z';
   var testDate2 = new Date('30 October 2018 00:00 UTC').toISOString().split('.')[0]+'Z';
 
@@ -36,13 +37,12 @@ app.get('/ticketmaster', (req, res) => {
 
   tm(test, (stringified) => res.end(JSON.stringify(stringified)));
 
-
 });
 
 // Get restaurant list
 app.get('/restaurants/:location', (req, res) => {
   console.log(req.params.location);
-  helper.getRestaurants(req.params.location, data => {
+  yelp.getRestaurants(req.params.location, data => {
     parsedData = JSON.parse(data);
     // console.log('parsedData', parsedData);
     res.status(200).send((parsedData));
