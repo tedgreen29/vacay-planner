@@ -2,8 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const db = require('../database');
-const tm = require('../tm/tm.js');
-const helper = require('../helpers/yelp');
+const tm = require('../helpers/tm');
+const yelp = require('../helpers/yelp');
 
 const app = express();
 const PORT = 3000;
@@ -42,7 +42,7 @@ app.get('/ticketmaster', (req, res) => {
 // Get restaurant list
 app.get('/restaurants/:location', (req, res) => {
   console.log(req.params.location);
-  helper.getRestaurants(req.params.location, data => {
+  yelp.getRestaurants(req.params.location, data => {
     parsedData = JSON.parse(data);
     // console.log('parsedData', parsedData);
     res.status(200).send((parsedData));
