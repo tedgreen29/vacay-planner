@@ -11,12 +11,14 @@ class FoodAndEventsPageBody extends React.Component {
 
     this.state = {
       restaurantList: [],
-      location: 'San Francisco'
+      location: 'San Francisco',
+      eventsList: []
     };
   }
 
   componentDidMount() {
     this.getRestaurantsByLocaton(this.state.location);
+    this.getEventsByLocationAndDate();
   }
 
   getRestaurantsByLocaton(location) {
@@ -28,12 +30,24 @@ class FoodAndEventsPageBody extends React.Component {
         console.log('result', result);
         this.setState({
           restaurantList: result.businesses
-        }
-      );    
+        });    
       }
     });
   }
 
+  getEventsByLocationAndDate() {
+    console.log('events test!!')
+    $.ajax({
+      type: 'GET',
+      url: `/events`,
+      success: result => {
+        console.log('events', result);
+        this.setState({
+          eventsList: result
+        });    
+      }
+    });
+  }
 
   render() {
     const panes = [
@@ -42,8 +56,15 @@ class FoodAndEventsPageBody extends React.Component {
           <FoodTabContent 
             restaurantList = {this.state.restaurantList}
           />
-        </Tab.Pane> },
-      { menuItem: 'Events', render: () => <Tab.Pane><EventsTabContent /></Tab.Pane> }
+        </Tab.Pane> 
+      },
+      { menuItem: 'Events', render: () => 
+        <Tab.Pane>
+          <EventsTabContent 
+             eventsList = {this.state.eventsList}
+          />
+        </Tab.Pane> 
+      }
     ]
     return (
       <div>
@@ -53,4 +74,4 @@ class FoodAndEventsPageBody extends React.Component {
   }
 }
 
-export default FoodAndEventsPageBody
+export default FoodAndEventsPageBody;
