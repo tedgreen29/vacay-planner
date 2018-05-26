@@ -17,11 +17,11 @@ class FoodAndEventsPageBody extends React.Component {
   }
 
   componentDidMount() {
-    this.getRestaurantsByLocaton(this.state.location);
+    this.getRestaurantsByLocation(this.state.location);
     this.getEventsByLocationAndDate();
   }
 
-  getRestaurantsByLocaton(location) {
+  getRestaurantsByLocation(location) {
     console.log('test!!')
     $.ajax({
       type: 'GET',
