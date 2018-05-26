@@ -19,7 +19,7 @@ const LandingPageBody = (props) => (
               End Date:<br />
               <input type="text" name="endDate" /><br />
               <input type="text" name="page" value="foodandevents" readOnly hidden /> {/*Temporary routing*/}
-              <input type="submit" />
+              <button onClick={() => props.history.push('/foodandevents')}>Submit</button>
             </form>
           </Card.Content>
         </Card>

@@ -10,16 +10,14 @@ const PORT = 3000;
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(express.static(__dirname + '/../client/dist'));
+const homePath = __dirname + '/../client/dist';
+app.use(express.static(homePath));
 
 app.use('/media', express.static(__dirname + '/../client/media'));
-app.get('/', (req, res) => {
 
-});
-
-app.post('/', (req, res) => {
-
-});
+app.use('/foodandevents', express.static(homePath));
+app.use('/login', express.static(homePath));
+app.use('/signup', express.static(homePath));
 
 app.get('/ticketmaster', (req, res) => {
   var testDate1 = new Date('30 May 2018 00:00 UTC').toISOString().split('.')[0]+'Z';
@@ -41,10 +39,10 @@ app.get('/ticketmaster', (req, res) => {
 
 });
 
-// Get restaurant list 
+// Get restaurant list
 app.get('/restaurants/:location', (req, res) => {
   console.log(req.params.location);
-  helper.getRestaurants(req.params.location, data => {    
+  helper.getRestaurants(req.params.location, data => {
     parsedData = JSON.parse(data);
     // console.log('parsedData', parsedData);
     res.status(200).send((parsedData));
