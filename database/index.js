@@ -17,23 +17,24 @@ db
 const User = db.define('users', {
   id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
   email: {type: Sequelize.STRING, unique: true},
-  password: Sequelize.STRING
+  password: {type: Sequelize.STRING, allowNull: false}/*,
+  salt: {type: Sequelize.STRING, allowNull: false}*/
 });
 
 const Trip = db.define('trips', {
   id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
   start_date: Sequelize.DATE,
   end_date: Sequelize.DATE,
-  tripName: Sequelize.STRING
+  tripName: {type: Sequelize.STRING, allowNull: false}
 })
 
 const Restaurant = db.define('restaurants', {
   id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-  name: Sequelize.STRING,
-  yelpURL: Sequelize.STRING,
-  review_count: Sequelize.INTEGER,
-  rating: Sequelize.INTEGER,
-  price: Sequelize.STRING,
+  name: {type: Sequelize.STRING, allowNull: false},
+  yelpURL: {type: Sequelize.STRING, allowNull: false},
+  review_count: {type: Sequelize.INTEGER, allowNull: false},
+  rating: {type: Sequelize.INTEGER, allowNull: false},
+  price: {type: Sequelize.STRING, allowNull: false},
   restLong: Sequelize.FLOAT,
   restLat: Sequelize.FLOAT,
   categories: Sequelize.JSON
@@ -41,11 +42,10 @@ const Restaurant = db.define('restaurants', {
 
 const Event = db.define('event', {
   id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-  name: Sequelize.STRING,
-  eventURL: Sequelize.STRING,
-  startDate: Sequelize.DATE,
-  endDate: Sequelize.DATE,
-  venueName: Sequelize.STRING,
+  name: {type: Sequelize.STRING, allowNull: false},
+  eventURL: {type: Sequelize.STRING, allowNull: false},
+  start_date: Sequelize.DATE,
+  venueName: {type: Sequelize.STRING, allowNull: false},
   venueLong: Sequelize.FLOAT,
   VenueLat: Sequelize.FLOAT
 });
@@ -81,27 +81,64 @@ User.sync().then(() => Trip.sync().then(() => Restaurant.sync().then(() => Event
 
 var dbHelpers = {
   addUser: (obj) => {
-
+    User.findOne({email: user.email}).then((user) => {
+      if (user === null) {
+        User.create({
+          email: obj.email,
+          password: obj.password
+        })
+      } else {
+        console.log(`User with email ${obj.email} already exists`);
+      }
+    });
   },
 
-  findUser: (user) => {
-
+  findUser: (obj) => {
+    User.findOne({email: obj.email})
   },
 
   getUserTrips: (user) => {
 
   },
 
-  newTrip: (eventList, restaurantList) => {
+  newTrip: (obj) => {
+    //create the Trip
+    Trip.create({
+      start_date: obj.startDate,
+      end_date: obj.end_date,
+      name: obj.name
+    }).then(trip => {
+      //create the Events
+      obj.eventList.forEach(event => {
+        var tempEvent = Event.define({
+          name: event.name,
+          eventURL: event.url,
+          start_date: event.dates.start.dateTime,
+          venueName: event.venues[0].name,
+          venueLong: event.venues[0].location.longitude,
+          VenueLat: event.venues[0].location.latitude
+        })
 
-  },
+        tempEvent.setTrip(trip);
+        tempEvent.save();
+      })
 
-  newRestaurant: (restaurant) => {
-
-  },
-
-  newEvent: (event) => {
-
+      //create the Restaurants
+      obj.restaurantList.forEach(restaurant => {
+        var tempRest = Restaurant.define({
+          name: restaurant.name,
+          yelpURL: restaurant.url,
+          review_count: restaurant.review_count,
+          rating: restaurant.rating,
+          price: restaurant.price,
+          restLong: restaurant.coordinates.longitude,
+          restLat: restaurant.coordinates.latitude,
+          categories: restaurant.categories
+        })
+        tempRest.setTrip(trip);
+        tempRest.save();
+      })
+    })
   }
 }
 
