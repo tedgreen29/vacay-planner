@@ -15,9 +15,14 @@ const FoodTabContent = (props) => (
             />
             <Item.Content>
               <Item.Header style={ {marginTop: 20} } className='restaurant-name'>{ `${index + 1}. ${restaurant.name}` }</Item.Header>
-              <Item.Meta>
-                <span className='restaurant-rating'>Rating: { restaurant.rating } Stars</span>
-              </Item.Meta>
+              <Item.Image>
+                <span className='restaurant-rating'>
+                  <Image 
+                    src={`/media/yelp_stars/regular_${(restaurant.rating).toString().replace('.5', '_half')}.png`} 
+                  />
+                </span>
+                <span style={ {marginLeft: 5} } > {restaurant.review_count} reviews</span>
+              </Item.Image>
               <Item.Description>
                 { restaurant.location.display_address.map(address => { 
                    return address
