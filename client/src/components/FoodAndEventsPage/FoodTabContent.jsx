@@ -1,66 +1,43 @@
 import React from 'react'
-import { Button, Card, Image, Icon } from 'semantic-ui-react'
+import { Button, Card, Image, Icon, Item, Segment } from 'semantic-ui-react'
 
-const FoodTabContent = () => (
-  <Card.Group>
-    <Card fluid>
-      <Card.Content>
-        <Image floated='right' size='mini' src='/media/mapAndAirplaneCoffee.jpg' />
-        <Card.Header>
-          Restaurant 1
-        </Card.Header>
-        <Card.Meta>
-          Rating 1
-        </Card.Meta>
-        <Card.Description>
-          Description 1 <strong>Category 1</strong>
-        </Card.Description>
-      </Card.Content>
-      <Card.Content extra>
-        <div className='ui two buttons'>
-          <Button basic color='red'><Icon name="empty heart" /></Button>
-        </div>
-      </Card.Content>
-    </Card>
-    <Card fluid>
-      <Card.Content>
-        <Image floated='right' size='mini' src='/media/mapAndAirplaneCoffee.jpg' />
-        <Card.Header>
-          Restaurant 2
-        </Card.Header>
-        <Card.Meta>
-          Rating 2
-        </Card.Meta>
-        <Card.Description>
-          Description 2 <strong>Category 2</strong>
-        </Card.Description>
-      </Card.Content>
-      <Card.Content extra>
-        <div className='ui two buttons'>
-          <Button basic color='red'><Icon name="empty heart" /></Button>
-        </div>
-      </Card.Content>
-    </Card>
-    <Card fluid>
-      <Card.Content>
-        <Image floated='right' size='mini' src='/media/mapAndAirplaneCoffee.jpg' />
-        <Card.Header>
-          Restaurant 3
-        </Card.Header>
-        <Card.Meta>
-          Rating 3
-        </Card.Meta>
-        <Card.Description>
-          Description 3 xxxxxxxx xxxxxxxx xxxxxxxx <strong>Category 3</strong>
-        </Card.Description>
-      </Card.Content>
-      <Card.Content extra>
-        <div className='ui two buttons'>
-          <Button basic color='red'><Icon name="empty heart" /></Button>
-        </div>
-      </Card.Content>
-    </Card>
-  </Card.Group>
+const FoodTabContent = (props) => (
+  <Segment.Group>
+    {props.restaurantList.map((restaurant, index) => {
+      return (
+      <Card fluid key={restaurant.id}>
+        <Item.Group>
+          <Item>
+            <Item.Image className='restaurant-image'
+              size='small'
+              src={ restaurant.image_url }
+              style={ {margin: 15} }
+            />
+            <Item.Content>
+              <Item.Header style={ {marginTop: 20} } className='restaurant-name'>{ `${index + 1}. ${restaurant.name}` }</Item.Header>
+              <Item.Meta>
+                <span className='restaurant-rating'>Rating: { restaurant.rating } Stars</span>
+              </Item.Meta>
+              <Item.Description>
+                {restaurant.location.display_address.map(address => { 
+                   return address
+                }).join(', ')} 
+              </Item.Description>
+              <Item.Extra>
+                {restaurant.categories.map(category => { 
+                  return category.title
+                }).join(', ')}
+                <Button icon floated='right' basic color='red' style={ {marginRight: 20} } >
+                  <Icon style={ {color: 'red'} } name="empty heart" />
+                </Button>
+              </Item.Extra>
+            </Item.Content>
+          </Item>
+        </Item.Group>
+      </Card>
+      )
+    })}
+  </Segment.Group>
 )
 
 export default FoodTabContent;

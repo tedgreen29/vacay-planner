@@ -45,7 +45,7 @@ app.get('/restaurants/:location', (req, res) => {
   helper.getRestaurants(req.params.location, data => {
     parsedData = JSON.parse(data);
     // console.log('parsedData', parsedData);
-    res.status(200).send((data));
+    res.status(200).send((parsedData));
   }, req.params.location)
 });
 
