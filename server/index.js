@@ -19,7 +19,8 @@ app.use('/foodandevents', express.static(homePath));
 app.use('/login', express.static(homePath));
 app.use('/signup', express.static(homePath));
 
-app.get('/ticketmaster', (req, res) => {
+// Get events list
+app.get('/events', (req, res) => {
   var testDate1 = new Date('30 May 2018 00:00 UTC').toISOString().split('.')[0]+'Z';
   var testDate2 = new Date('30 October 2018 00:00 UTC').toISOString().split('.')[0]+'Z';
 
@@ -35,7 +36,6 @@ app.get('/ticketmaster', (req, res) => {
   };
 
   tm(test, (stringified) => res.end(JSON.stringify(stringified)));
-
 
 });
 
