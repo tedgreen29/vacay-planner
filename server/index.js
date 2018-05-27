@@ -39,6 +39,13 @@ app.get('/events', (req, res) => {
 
 });
 
+app.get('/test', (req, res) => {
+  // console.log(db);
+  db.createDummyData();
+
+  res.status(200).end('test complete')
+})
+
 // Get restaurant list
 app.get('/restaurants/:location', (req, res) => {
   console.log(req.params.location);
