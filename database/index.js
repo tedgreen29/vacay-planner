@@ -37,7 +37,7 @@ const Restaurant = db.define('restaurants', {
   yelpURL: {type: Sequelize.STRING, allowNull: false},
   review_count: {type: Sequelize.INTEGER, allowNull: false},
   rating: {type: Sequelize.INTEGER, allowNull: false},
-  price: {type: Sequelize.STRING, allowNull: false},
+  price: {type: Sequelize.STRING},
   restLong: Sequelize.FLOAT,
   restLat: Sequelize.FLOAT,
   categories: Sequelize.JSON
@@ -46,7 +46,7 @@ const Restaurant = db.define('restaurants', {
 const Event = db.define('event', {
   id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
   name: {type: Sequelize.STRING, allowNull: false},
-  eventURL: {type: Sequelize.STRING, allowNull: false},
+  eventURL: {type: Sequelize.STRING},
   start_date: Sequelize.DATE,
   venueName: {type: Sequelize.STRING/*, allowNull: false*/},
   venueLong: Sequelize.FLOAT,
@@ -162,7 +162,7 @@ var dbHelpers = {
       });
 
       //associate with user
-      testTrip.setUser(user);
+      testTrip.setUser(user, {save: false});
 
       // testTrip.getUser().then(user => console.log(user));
 
@@ -182,7 +182,7 @@ var dbHelpers = {
           })
 
           //associate with trip
-          trueEvent.setTrip(trip);
+          trueEvent.setTrip(trip, {save: false});
 
           //save test events
           trueEvent.save();
@@ -191,7 +191,7 @@ var dbHelpers = {
         testRests.forEach(restaurant => {
 
           //create test restaurants
-          var trueRest = Event.build({
+          var trueRest = Restaurant.build({
             name: restaurant.name,
             yelpURL: restaurant.url,
             review_count: restaurant.review_count,
@@ -203,14 +203,11 @@ var dbHelpers = {
           })
 
           //associate with trip
-          trueRest.setTrip(trip);
+          trueRest.setTrip(trip, {save: false});
 
           //save test restaurants
           trueRest.save();
         });
-
-
-
       });
     });
   }
