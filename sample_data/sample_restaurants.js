@@ -429,4 +429,4 @@ const sampleRestaurants = [
   }
 ]
 
-export default sampleRestaurants;
+module.exports = sampleRestaurants;

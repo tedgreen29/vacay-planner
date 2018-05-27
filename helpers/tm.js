@@ -18,7 +18,7 @@ const tm = (options, cb) => {
     },
     json: true
   })
-  .then((data) => cb(data._embedded.events[0]))
+  .then((data) => cb(data._embedded.events))
   .catch((xhr, status, err) => console.log(err))
 };
 
