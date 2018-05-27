@@ -43,7 +43,7 @@ class FoodAndEventsPageBody extends React.Component {
       success: result => {
         console.log('events', result);
         this.setState({
-          eventsList: result
+          eventsList: JSON.parse(result)
         });    
       }
     });
