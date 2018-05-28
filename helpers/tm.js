@@ -1,5 +1,7 @@
 const request = require('request-promise');
-const key = require('./tm.config.js');
+const config = require('../config.js');
+
+const key = config.TM_KEY
 
 const tm = (options, cb) => {
   console.log(options)
@@ -16,7 +18,7 @@ const tm = (options, cb) => {
     },
     json: true
   })
-  .then((data) => cb(data._embedded.events[0]))
+  .then((data) => cb(data._embedded.events))
   .catch((xhr, status, err) => console.log(err))
 };
 
