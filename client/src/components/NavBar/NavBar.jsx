@@ -1,20 +1,21 @@
 import React from 'react';
 import NavLink from 'react-router-dom/NavLink'
+import { Menu } from 'semantic-ui-react';
 
 const NavBar = () => {
   return (
-    <ul className='nav'>
-      <li>
+    <Menu borderless>
+      <Menu.Item position="right">
         <NavLink to='/login' activeClassName='active'>
           Login
         </NavLink>
-      </li>
-      <li>
+      </Menu.Item>
+      <Menu.Item>
         <NavLink to='/signup' activeClassName='active'>
           Sign Up
         </NavLink>
-      </li>
-    </ul>
+      </Menu.Item>
+    </Menu>
   )
 }
 

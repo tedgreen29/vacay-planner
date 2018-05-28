@@ -1,5 +1,5 @@
-import React from 'react'
-import { Button, Card, Image, Icon } from 'semantic-ui-react'
+import React from 'react';
+import { Button, Card, Image, Icon } from 'semantic-ui-react';
 
 const EventsTabContent = () => (
   <Card.Group>

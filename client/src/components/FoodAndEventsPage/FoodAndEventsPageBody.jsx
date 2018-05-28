@@ -1,7 +1,8 @@
 import React from 'react';
 import FoodTabContent from './FoodTabContent.jsx';
 import EventsTabContent from './EventsTabContent.jsx';
-import { Tab } from 'semantic-ui-react';
+import FoodAndEventsSidebar from './FoodAndEventsSidebar.jsx'
+import { Tab, Grid } from 'semantic-ui-react';
 import $ from 'jquery';
 
 
@@ -29,7 +30,7 @@ class FoodAndEventsPageBody extends React.Component {
         this.setState({
           restaurantList: result.businesses
         }
-      );    
+      );
       }
     });
   }
@@ -37,20 +38,19 @@ class FoodAndEventsPageBody extends React.Component {
 
   render() {
     const panes = [
-      { menuItem: 'Restaurants', render: () => 
+      { menuItem: 'Food', render: () =>
         <Tab.Pane>
-          <FoodTabContent 
+          <FoodTabContent
             restaurantList = {this.state.restaurantList}
           />
         </Tab.Pane> },
-      { menuItem: 'Events', render: () => <Tab.Pane><EventsTabContent /></Tab.Pane> }
+      { menuItem: 'Events', render: () =>
+        <Tab.Pane>
+          <EventsTabContent />
+        </Tab.Pane> }
     ]
-    return (
-      <div>
-        <Tab panes={panes} />
-      </div>
-    );
+    return <Tab panes={panes} />;
   }
 }
 
-export default FoodAndEventsPageBody
+export default FoodAndEventsPageBody;

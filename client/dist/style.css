@@ -2,7 +2,7 @@ ul {
   padding: 0;
   float: right;
  }
- 
+
  li {
    list-style-type: none;
  }
@@ -13,4 +13,8 @@ ul {
 
 .nav li {
   margin-right: 15px;
+}
+
+.ui.grid {
+  margin-left: 10px;
 }
