@@ -4,8 +4,10 @@
   "description": "app for planning vacation activities &amp; events",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server/index.js",
-    "dev:react": "webpack -d --watch"
+    "start": "node server/index.js",
+    "dev:react": "webpack -d --watch",
+    "dev:start": "nodemon server/index.js",
+    "heroku-postbuild": "webpack"
   },
   "repository": {
     "type": "git",

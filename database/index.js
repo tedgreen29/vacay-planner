@@ -1,11 +1,27 @@
 const Sequelize = require('sequelize');
-const db = new Sequelize('vacay_planner', 'vacay', 'planner', {
-  host: 'localhost',
-  dialect: 'postgres'
-})
 
+
+
+
+console.log(process.env.DATABASE_URL)
 const testRests = require('../sample_data/sample_restaurants.js');
 const testEvents = require('../sample_data/sample_events.js');
+
+if (process.env.DATABASE_URL !== undefined) {
+  var db = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'postgres',
+    protocol: 'postgres',
+    // port:     match[4],
+    // host:     match[3],
+    logging:  true
+  })
+
+} else {
+  var db = new Sequelize('vacay_planner', 'vacay', 'planner', {
+    host: 'localhost',
+    dialect: 'postgres'
+  })
+}
 
 //Check for db connection;
 db
@@ -210,6 +226,13 @@ var dbHelpers = {
         });
       });
     });
+  },
+
+  clearTables: () => {
+    Event.findAll().then(events => events.forEach(event => event.destroy()));
+    Restaurant.findAll().then(restaurants => restaurants.forEach(restaurant => restaurant.destroy()));
+    Trip.findAll().then(trips => trips.forEach(trip => trip.destroy()));
+    User.findAll().then(users => users.forEach(user => user.destroy()));
   }
 }
 
