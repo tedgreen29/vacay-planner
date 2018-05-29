@@ -18,16 +18,24 @@ class SaveButton extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={ {float: 'right'} }>
         { this.state.isSaved ?
-        (<Button icon floated='right' basic color='red' style={ {marginRight: 20} }  onClick={this.onClick}>
-          <Icon style={ {color: 'red'} } name="heart" />
-        </Button>) 
+          (
+            <Icon color = 'red' 
+              name="heart" 
+              size='big' 
+              onClick={this.onClick}
+            />
+          )
         :
-        (<Button icon floated='right' basic color='red' style={ {marginRight: 20} }  onClick={this.onClick}>
-          <Icon style={ {color: 'red'} } name="empty heart" />
-        </Button>
-        )}
+          (
+            <Icon color = 'red'
+              name="empty heart" 
+              size='big' 
+              onClick={this.onClick}
+            />
+          )
+        }
       </div>
     );
   }
