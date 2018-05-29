@@ -63,6 +63,6 @@ app.get('/restaurants/:location', (req, res) => {
   }, req.params.location)
 });
 
-app.listen(PORT, () => {
+app.listen(process.env.PORT !== undefined ? process.env.PORT : PORT, () => {
   console.log(`listening on port ${PORT}`);
 });
