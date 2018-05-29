@@ -4,8 +4,9 @@
   "description": "app for planning vacation activities &amp; events",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server/index.js",
-    "dev:react": "webpack -d --watch"
+    "start": "server/index.js",
+    "dev:react": "webpack -d --watch",
+    "dev:start": "nodemon server/index.js"
   },
   "repository": {
     "type": "git",
