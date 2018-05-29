@@ -1,6 +1,7 @@
-import React from 'react'
-import moment from 'moment'
-import { Button, Card, Image, Icon, Item, Segment, Label } from 'semantic-ui-react'
+import React from 'react';
+import moment from 'moment';
+import SaveButton from '../Buttons/SaveButton.jsx';
+import { Button, Card, Image, Icon, Item, Segment, Label } from 'semantic-ui-react';
 
 const EventsTabContent = (props) => (
   <Segment.Group>
@@ -33,6 +34,7 @@ const EventsTabContent = (props) => (
                 >
                   {moment(event.dates.start.dateTime).format('MMM DD ddd')}
                 </Label>
+                < SaveButton />
               </Item.Extra>
             </Item.Content>
           </Item>
