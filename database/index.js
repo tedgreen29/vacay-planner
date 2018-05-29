@@ -15,6 +15,7 @@ if (process.env.DATABASE_URL !== undefined) {
     host:     match[3],
     logging:  true
   })
+  console.log(process.env.DATABASE_URL);
 } else {
   var db = new Sequelize('vacay_planner', 'vacay', 'planner', {
     host: 'localhost',
