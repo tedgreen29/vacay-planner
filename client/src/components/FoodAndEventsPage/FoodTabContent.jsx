@@ -1,4 +1,5 @@
 import React from 'react';
+import SaveButton from '../Buttons/SaveButton.jsx';
 import { Button, Card, Image, Icon, Item, Segment } from 'semantic-ui-react';
 
 const FoodTabContent = (props) => (
@@ -36,9 +37,7 @@ const FoodTabContent = (props) => (
                 <Icon name='food' fitted style={ {paddingLeft: 10}}/> {restaurant.categories.map(category => {
                   return category.title
                 }).join(', ')}
-                <Button icon floated='right' basic color='red' style={ {marginRight: 20} } >
-                  <Icon style={ {color: 'red'} } name="empty heart" />
-                </Button>
+                < SaveButton />
               </Item.Extra>
             </Item.Content>
           </Item>
