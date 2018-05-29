@@ -210,6 +210,13 @@ var dbHelpers = {
         });
       });
     });
+  },
+
+  clearTables: () => {
+    Event.findAll().then(events => events.forEach(event => event.destroy()));
+    Restaurant.findAll().then(restaurants => restaurants.forEach(restaurant => restaurant.destroy()));
+    Trip.findAll().then(trips => trips.forEach(trip => trip.destroy()));
+    User.findAll().then(users => users.forEach(user => user.destroy()));
   }
 }
 

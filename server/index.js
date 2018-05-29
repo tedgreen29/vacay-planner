@@ -39,9 +39,16 @@ app.get('/events', (req, res) => {
 
 });
 
-app.get('/test', (req, res) => {
+app.get('/filltestdata', (req, res) => {
   // console.log(db);
   db.createDummyData();
+
+  res.status(200).end('test complete')
+})
+
+app.get('/cleardb', (req, res) => {
+  // console.log(db);
+  db.clearTables();
 
   res.status(200).end('test complete')
 })
