@@ -4,7 +4,7 @@ import MyTripsPageBody from './MyTripsPageBody.jsx';
 
 const MyTripsPage = () => {
   return (
-    <div>
+    <div className='mytripspage'>
       <NavBar />
       <MyTripsPageBody />
     </div>

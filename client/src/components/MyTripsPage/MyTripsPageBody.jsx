@@ -1,13 +1,13 @@
 import React from 'react';
-
+import Proptypes from 'prop-types';
 import { Menu } from 'semantic-ui-react'
-
+import SelectTrip from './SelectTrip.jsx';
 
 class MyTripsPageBody extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
-      selectedTrip: 1
+      selectedTrip: '1'
     }
     this.updateSelection = this.updateSelection.bind(this);
   }
@@ -21,26 +21,13 @@ class MyTripsPageBody extends React.Component {
   }
 
   render() {
-    const trips = {
-      1 : 'trip 1',
-      2 : 'trip 2',
-      3 : 'trip 3'
-    }
-
     return (
-      <Menu size='large' fixed='left' vertical style={{marginTop: 50, marginLeft: 40}}>
-        {Object.keys(trips).map(tripId => {
-          return (
-            <Menu.Item
-              style={tripId === this.state.selectedTrip ? { color: '#d0021b' } : null}
-              onClick={this.updateSelection.bind(null, tripId)}
-              key={tripId}
-            >
-              {trips[tripId]}
-            </Menu.Item>
-          )
-        })}
-      </Menu>
+      <div>
+        <SelectTrip
+          selectedTrip = {this.state.selectedTrip}
+          onSelect = {this.updateSelection}
+        />
+      </div>
     )
   }
 }
