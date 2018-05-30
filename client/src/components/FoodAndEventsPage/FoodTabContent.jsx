@@ -37,7 +37,7 @@ const FoodTabContent = (props) => (
                 <Icon name='food' fitted style={ {paddingLeft: 10}}/> {restaurant.categories.map(category => {
                   return category.title
                 }).join(', ')}
-                < SaveButton />
+                <SaveButton toggleFavorite={ () => props.toggleFavorite(index, 'food') }/>
               </Item.Extra>
             </Item.Content>
           </Item>

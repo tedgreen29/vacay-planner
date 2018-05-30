@@ -34,7 +34,7 @@ const EventsTabContent = (props) => (
                 >
                   {moment(event.dates.start.dateTime).format('MMM DD ddd')}
                 </Label>
-                < SaveButton />
+                < SaveButton toggleFavorite={ () => props.toggleFavorite(index, 'events') }/>
               </Item.Extra>
             </Item.Content>
           </Item>
