@@ -4,7 +4,7 @@ import SaveButton from '../Buttons/SaveButton.jsx';
 import { Button, Card, Image, Icon, Item, Segment, Label } from 'semantic-ui-react';
 
 const EventsTabContent = (props) => (
-  <Segment.Group>
+  <div>
     {props.eventsList.map((event, index) => {
       return (
       <Card fluid key={event.id}>
@@ -34,7 +34,7 @@ const EventsTabContent = (props) => (
                 >
                   {moment(event.dates.start.dateTime).format('MMM DD ddd')}
                 </Label>
-                < SaveButton />
+                < SaveButton toggleFavorite={ () => props.toggleFavorite(index, 'events') }/>
               </Item.Extra>
             </Item.Content>
           </Item>
@@ -42,7 +42,7 @@ const EventsTabContent = (props) => (
       </Card>
       )
     })}
-  </Segment.Group>
+  </div>
 )
 
 export default EventsTabContent;
