@@ -3,7 +3,7 @@ import SaveButton from '../Buttons/SaveButton.jsx';
 import { Button, Card, Image, Icon, Item, Segment } from 'semantic-ui-react';
 
 const FoodTabContent = (props) => (
-  <Segment>
+  <div>
     {props.restaurantList.map((restaurant, index) => {
       return (
       <Card fluid key={restaurant.id}>
@@ -45,7 +45,7 @@ const FoodTabContent = (props) => (
       </Card>
       )
     })}
-  </Segment>
+  </div>
 )
 
 export default FoodTabContent;

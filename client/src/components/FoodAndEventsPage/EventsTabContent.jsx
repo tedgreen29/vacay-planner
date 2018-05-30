@@ -4,7 +4,7 @@ import SaveButton from '../Buttons/SaveButton.jsx';
 import { Button, Card, Image, Icon, Item, Segment, Label } from 'semantic-ui-react';
 
 const EventsTabContent = (props) => (
-  <Segment.Group>
+  <div>
     {props.eventsList.map((event, index) => {
       return (
       <Card fluid key={event.id}>
@@ -42,7 +42,7 @@ const EventsTabContent = (props) => (
       </Card>
       )
     })}
-  </Segment.Group>
+  </div>
 )
 
 export default EventsTabContent;
