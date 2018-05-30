@@ -9,6 +9,15 @@ class MyTripsPageBody extends React.Component {
     this.state = {
       selectedTrip: 1
     }
+    this.updateSelection = this.updateSelection.bind(this);
+  }
+
+  updateSelection(tripId) {
+    this.setState(() => {
+      return {
+        selectedTrip: tripId
+      }
+    })
   }
 
   render() {
@@ -20,11 +29,14 @@ class MyTripsPageBody extends React.Component {
 
     return (
       <Menu size='large' fixed='left' vertical style={{marginTop: 50, marginLeft: 40}}>
-        {Object.keys(trips).map(trip => {
-          console.log(trip);
+        {Object.keys(trips).map(tripId => {
           return (
-            <Menu.Item>
-              {trips[trip]}
+            <Menu.Item
+              style={tripId === this.state.selectedTrip ? { color: '#d0021b' } : null}
+              onClick={this.updateSelection.bind(null, tripId)}
+              key={tripId}
+            >
+              {trips[tripId]}
             </Menu.Item>
           )
         })}
