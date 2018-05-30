@@ -30,42 +30,32 @@
 
 postgres will be running on port 5432
 
+## Creating Database
+
+Run the following in command line:
+`CREATEDB my_db;`
+
+***Suggested***
+`CREATEDB vacay_planner`
+
+Log into postgresql from your newly created databases:
+`psql my_db`
 
 ## Setting up Users and Permissions
 
-In a new terminal window, run the following command:
-`psql`
-
-This should show something similar to the following:
-`mycomputeruser=#`
-
 You will need to setup a user to be able to access your DB so you don't use the root user (which is just *bad form*)
 
-Do so by running the following command:
-`CREATE USER username PASSWORD 'stringInQuotes';`
-
+While logged into postgresql, create a new user role:
+`CREATE ROLE username PASSWORD 'stringInQuotes';`
 
 ***Suggested***
 `CREATE USER vacay PASSWORD 'planner';`
 
 
 To check if your user was created, run the following in psql:
-`SELECT usename FROM pg_user;`
+`SELECT USER usename FROM pg_user;`
 
 **This username and password combination you will use with sequelize**
-
-## Creating Database
-
-Run the following in psql:
-`CREATE DATABASE my_db;`
-
-
-***Suggested***
-`CREATE DATABASE vacay_planner;`
-
-
-To show your databases, run the following:
-`\list`
 
 ## Grant user Database Permissions
 

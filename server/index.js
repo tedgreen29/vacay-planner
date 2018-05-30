@@ -39,9 +39,16 @@ app.get('/events', (req, res) => {
 
 });
 
-app.get('/test', (req, res) => {
+app.get('/filltestdata', (req, res) => {
   // console.log(db);
   db.createDummyData();
+
+  res.status(200).end('test complete')
+})
+
+app.get('/cleardb', (req, res) => {
+  // console.log(db);
+  db.clearTables();
 
   res.status(200).end('test complete')
 })
@@ -56,6 +63,6 @@ app.get('/restaurants/:location', (req, res) => {
   }, req.params.location)
 });
 
-app.listen(PORT, () => {
+app.listen(process.env.PORT !== undefined ? process.env.PORT : PORT, () => {
   console.log(`listening on port ${PORT}`);
 });
