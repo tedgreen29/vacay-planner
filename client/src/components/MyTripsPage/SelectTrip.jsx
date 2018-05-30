@@ -9,7 +9,7 @@ function SelectTrip(props) {
     '3' : 'trip 3'
   };
   return (
-    <Menu size='large' fixed='left' vertical style={{marginTop: 50, marginLeft: 40}}>
+    <Menu size='large' fixed='left' vertical style={{marginTop: 50}}>
       {Object.keys(trips).map(tripId => {
         return (
           <Menu.Item
