@@ -1,7 +1,9 @@
 import React from 'react';
 import Proptypes from 'prop-types';
-import { Menu } from 'semantic-ui-react'
+import moment from 'moment';
+import { Grid } from 'semantic-ui-react';
 import SelectTrip from './SelectTrip.jsx';
+import EventsList from './EventsList.jsx';
 import $ from 'jquery';
 
 class MyTripsPageBody extends React.Component {
@@ -18,7 +20,7 @@ class MyTripsPageBody extends React.Component {
   componentDidMount() {
     this.updateSelection(this.state.selectedTrip);
   }
-  
+
   updateSelection(tripId) {
     this.setState(() => {
       return {
@@ -44,11 +46,18 @@ class MyTripsPageBody extends React.Component {
 
   render() {
     return (
-      <div>
-        <SelectTrip
-          selectedTrip = {this.state.selectedTrip}
-          onSelect = {this.updateSelection}
-        />
+      <div> 
+        <Grid columns='equal' style={ {marginTop: 10, backgroundColor: 'white'} }>
+          <Grid.Column left='true' width={3}>
+            <SelectTrip
+              selectedTrip = {this.state.selectedTrip}
+              onSelect = {this.updateSelection}
+            />
+          </Grid.Column>
+          <Grid.Column width={13}>
+            {!this.state.eventsSelected ? <p>Loading....</p> : <EventsList eventsSelected={this.state.eventsSelected}/>}
+          </Grid.Column>
+        </Grid>
       </div>
     )
   }
