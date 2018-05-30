@@ -1,19 +1,36 @@
 import React from 'react';
-import { Tab } from 'semantic-ui-react';
 
-const panes = [
-{ menuItem: 'Trip 1', render: () => <Tab.Pane>Content 1</Tab.Pane> },
-{ menuItem: 'Trip 2', render: () => <Tab.Pane>Content 2</Tab.Pane> },
-{ menuItem: 'Trip 3', render: () => <Tab.Pane>Content 3</Tab.Pane> },
-]
+import { Menu } from 'semantic-ui-react'
 
 
-const MyTripsPageBody = () => 
-  <Tab 
-    menu={{ fluid: true, vertical: true, tabular: true }} 
-    panes={panes} 
-  />
- 
+class MyTripsPageBody extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      selectedTrip: 1
+    }
+  }
 
+  render() {
+    const trips = {
+      1 : 'trip 1',
+      2 : 'trip 2',
+      3 : 'trip 3'
+    }
+
+    return (
+      <Menu size='large' fixed='left' vertical style={{marginTop: 50, marginLeft: 40}}>
+        {Object.keys(trips).map(trip => {
+          console.log(trip);
+          return (
+            <Menu.Item>
+              {trips[trip]}
+            </Menu.Item>
+          )
+        })}
+      </Menu>
+    )
+  }
+}
 
 export default MyTripsPageBody;
