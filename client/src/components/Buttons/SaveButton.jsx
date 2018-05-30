@@ -14,6 +14,7 @@ class SaveButton extends React.Component {
     this.setState({
       isSaved: !this.state.isSaved
     });
+    this.props.toggleFavorite();
   }
 
   render() {
