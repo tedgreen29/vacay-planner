@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize');
 
-console.log(process.env.DATABASE_URL)
 const testRests = require('../sample_data/sample_restaurants.js');
 const testEvents = require('../sample_data/sample_events.js');
 
@@ -18,7 +17,8 @@ if (process.env.DATABASE_URL !== undefined) {
   })
 }
 
-//Check for db connection;
+// Check for db connection
+
 db
   .authenticate()
   .then(() => {
@@ -28,21 +28,25 @@ db
     console.error('Unable to connect to the database:', err);
   });
 
-var User = db.define('users', {
+
+// The following 4 functions create the
+// Database Table Schemas
+
+const User = db.define('users', {
   id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
   email: {type: Sequelize.STRING, unique: true},
   password: {type: Sequelize.STRING, allowNull: false}/*,
   salt: {type: Sequelize.STRING, allowNull: false}*/
 });
 
-var Trip = db.define('trips', {
+const Trip = db.define('trips', {
   id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
   start_date: Sequelize.DATE,
   end_date: Sequelize.DATE,
-  tripName: {type: Sequelize.STRING/*, allowNull: false*/}
+  tripName: {type: Sequelize.STRING, allowNull: false}
 })
 
-var Restaurant = db.define('restaurants', {
+const Restaurant = db.define('restaurants', {
   id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
   name: {type: Sequelize.STRING, allowNull: false},
   yelpURL: {type: Sequelize.STRING, allowNull: false},
@@ -51,18 +55,26 @@ var Restaurant = db.define('restaurants', {
   price: {type: Sequelize.STRING},
   restLong: Sequelize.FLOAT,
   restLat: Sequelize.FLOAT,
-  categories: Sequelize.JSON
+  categories: Sequelize.JSON,
+  image_url: Sequelize.STRING,
+  display_address: Sequelize.JSON
 })
 
-var Event = db.define('event', {
+const Event = db.define('event', {
   id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
   name: {type: Sequelize.STRING, allowNull: false},
   eventURL: {type: Sequelize.STRING},
+  eventImg: Sequelize.STRING,
   start_date: Sequelize.DATE,
   venueName: {type: Sequelize.STRING/*, allowNull: false*/},
   venueLong: Sequelize.FLOAT,
-  VenueLat: Sequelize.FLOAT
+  venueLat: Sequelize.FLOAT,
+  venueAddress: Sequelize.STRING
 });
+
+
+// This sets up Associations between different tables/models,
+// and gives us nifty helper functions; like setters and getters.
 
 User.hasMany(Trip, {
   foreignKey: {
@@ -90,12 +102,20 @@ Trip.hasMany(Event, {
 
 Event.belongsTo(Trip);
 
-//This long promise chain is required to make sure that all of the associations are setup properly.
+// This long promise chain is required to make sure
+// that all of the associations are setup properly.
+
 User.sync().then(() => Trip.sync().then(() => Restaurant.sync().then(() => Event.sync())));
 
+// These are all of the functions that are
+// being exported to the server file.
+
 var dbHelpers = {
+
+  // This function adds a new user if one is passed as an object
+  // and is
   addUser: (obj) => {
-    User.findOne({email: user.email}).then(user => {
+    User.findOne({email: obj.email}).then(user => {
       if (user === null || user === []) {
         User.create({
           email: obj.email,
@@ -107,14 +127,20 @@ var dbHelpers = {
     });
   },
 
+  // This will find a user and pass it to a callback,
+  // which is needed for authentication to work
   findUser: (obj, cb) => {
     User.findOne({email: obj.email}).then(user => cb(user))
   },
 
-  getUserTrips: (user, cb) => {
+  // This will find a given user's Trips
+  // and all associated Events & Restaurants
+  // and then pass that whole thing
+  // to a callback
+  getUserTrips: (obj, cb) => {
     var output = [];
 
-    User.findOne({where: {email: user.email}})
+    User.findOne({where: {email: obj.email}})
     .then( user => {
 
       //find all user Trips
@@ -146,45 +172,62 @@ var dbHelpers = {
     })
   },
 
+  // This will create a new Trip
+  // and save all associated Events
+  // & Restaurants to the Database
   newTrip: (obj) => {
-    //create the Trip
-    Trip.create({
-      start_date: obj.startDate,
-      end_date: obj.end_date,
-      name: obj.name
-    }).then(trip => {
-      //create the Events
-      obj.eventList.forEach(event => {
-        var tempEvent = Event.define({
-          name: event.name,
-          eventURL: event.url,
-          start_date: event.dates.start.dateTime,
-          venueName: event.venues[0].name,
-          venueLong: event.venues[0].location.longitude,
-          VenueLat: event.venues[0].location.latitude
+
+    User.findOne({where: obj.user}).then(user => {
+
+
+      //create the Trip
+      user.createTrip({
+        start_date: obj.trip.startDate,
+        end_date: obj.trip.end_date,
+        name: obj.trip.name
+      }).then(trip => {
+
+        //create the Events
+        obj.eventList.forEach(event => {
+          var tempEvent = Event.define({
+            name: event.name,
+            eventURL: event.url,
+            eventImg: event.images[0].url,
+            start_date: event.dates.start.dateTime,
+            venueName: event._embedded.venues[0].name,
+            venueLong: event._embedded.venues[0].location.longitude,
+            venueLat: event._embedded.venues[0].location.latitude,
+            venueAddress: `${event._embedded.venues[0].address.line1}, ${event._embedded.venues[0].city.name}, ${event._embedded.venues[0].state.stateCode} ${event._embedded.venues[0].postalCode}`
+          })
+
+          tempEvent.setTrip(trip, {save: false});
+          tempEvent.save();
         })
 
-        tempEvent.setTrip(trip, {save: false});
-        tempEvent.save();
-      })
-
-      //create the Restaurants
-      obj.restaurantList.forEach(restaurant => {
-        var tempRest = Restaurant.define({
-          name: restaurant.name,
-          yelpURL: restaurant.url,
-          review_count: restaurant.review_count,
-          rating: restaurant.rating,
-          price: restaurant.price,
-          restLong: restaurant.coordinates.longitude,
-          restLat: restaurant.coordinates.latitude,
-          categories: restaurant.categories
+        //create the Restaurants
+        obj.restaurantList.forEach(restaurant => {
+          var tempRest = Restaurant.define({
+            name: restaurant.name,
+            yelpURL: restaurant.url,
+            review_count: restaurant.review_count,
+            rating: restaurant.rating,
+            price: restaurant.price,
+            restLong: restaurant.coordinates.longitude,
+            restLat: restaurant.coordinates.latitude,
+            categories: restaurant.categories,
+            display_address: restaurant.location.display_address,
+            image_url: restaurant.image_url
+          })
+          tempRest.setTrip(trip, {save: false});
+          tempRest.save();
         })
-        tempRest.setTrip(trip, {save: false});
-        tempRest.save();
       })
     })
   },
+
+  //////////////////////////////////////////////////////////
+  //                 Test data use Only                   //
+  //////////////////////////////////////////////////////////
 
   createDummyData: () => {
     //create test user
@@ -217,10 +260,12 @@ var dbHelpers = {
           var trueEvent = Event.build({
             name: event.name,
             eventURL: event.url,
+            eventImg: event.images[0].url,
             start_date: event.dates.start.dateTime,
             venueName: event._embedded.venues[0].name,
             venueLong: event._embedded.venues[0].location.longitude,
-            VenueLat: event._embedded.venues[0].location.latitude
+            venueLat: event._embedded.venues[0].location.latitude,
+            venueAddress: `${event._embedded.venues[0].address.line1}, ${event._embedded.venues[0].city.name}, ${event._embedded.venues[0].state.stateCode} ${event._embedded.venues[0].postalCode}`
           })
 
           //associate with trip
@@ -241,7 +286,9 @@ var dbHelpers = {
             price: restaurant.price,
             restLong: restaurant.coordinates.longitude,
             restLat: restaurant.coordinates.latitude,
-            categories: restaurant.categories
+            categories: restaurant.categories,
+            display_address: restaurant.location.display_address,
+            image_url: restaurant.image_url
           })
 
           //associate with trip
@@ -254,6 +301,13 @@ var dbHelpers = {
     });
   },
 
+
+  //////////////////////////////////////////////////////////
+  //                       End                            //
+  //////////////////////////////////////////////////////////
+
+  // This function clears the contents of the Tables within
+  // the Database without removing the schemas
   clearTables: () => {
     Event.findAll().then(events => events.forEach(event => event.destroy()));
     Restaurant.findAll().then(restaurants => restaurants.forEach(restaurant => restaurant.destroy()));
@@ -261,6 +315,8 @@ var dbHelpers = {
     User.findAll().then(users => users.forEach(user => user.destroy()));
   },
 
+  // This function Drops all tables. If used, server needs
+  // to be restarted to recreate the database tables again
   dropTables: () => {
     return db.drop();
   }
