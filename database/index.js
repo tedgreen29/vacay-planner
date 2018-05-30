@@ -1,8 +1,5 @@
 const Sequelize = require('sequelize');
 
-
-
-
 console.log(process.env.DATABASE_URL)
 const testRests = require('../sample_data/sample_restaurants.js');
 const testEvents = require('../sample_data/sample_events.js');
@@ -11,8 +8,6 @@ if (process.env.DATABASE_URL !== undefined) {
   var db = new Sequelize(process.env.DATABASE_URL, {
     dialect: 'postgres',
     protocol: 'postgres',
-    // port:     match[4],
-    // host:     match[3],
     logging:  true
   })
 
@@ -33,21 +28,21 @@ db
     console.error('Unable to connect to the database:', err);
   });
 
-const User = db.define('users', {
+var User = db.define('users', {
   id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
   email: {type: Sequelize.STRING, unique: true},
   password: {type: Sequelize.STRING, allowNull: false}/*,
   salt: {type: Sequelize.STRING, allowNull: false}*/
 });
 
-const Trip = db.define('trips', {
+var Trip = db.define('trips', {
   id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
   start_date: Sequelize.DATE,
   end_date: Sequelize.DATE,
   tripName: {type: Sequelize.STRING/*, allowNull: false*/}
 })
 
-const Restaurant = db.define('restaurants', {
+var Restaurant = db.define('restaurants', {
   id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
   name: {type: Sequelize.STRING, allowNull: false},
   yelpURL: {type: Sequelize.STRING, allowNull: false},
@@ -59,7 +54,7 @@ const Restaurant = db.define('restaurants', {
   categories: Sequelize.JSON
 })
 
-const Event = db.define('event', {
+var Event = db.define('event', {
   id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
   name: {type: Sequelize.STRING, allowNull: false},
   eventURL: {type: Sequelize.STRING},
@@ -100,8 +95,8 @@ User.sync().then(() => Trip.sync().then(() => Restaurant.sync().then(() => Event
 
 var dbHelpers = {
   addUser: (obj) => {
-    User.findOne({email: user.email}).then((user) => {
-      if (user === null) {
+    User.findOne({email: user.email}).then(user => {
+      if (user === null || user === []) {
         User.create({
           email: obj.email,
           password: obj.password
@@ -112,12 +107,43 @@ var dbHelpers = {
     });
   },
 
-  findUser: (obj) => {
-    User.findOne({email: obj.email})
+  findUser: (obj, cb) => {
+    User.findOne({email: obj.email}).then(user => cb(user))
   },
 
-  getUserTrips: (user) => {
+  getUserTrips: (user, cb) => {
+    var output = [];
 
+    User.findOne({where: {email: user.email}})
+    .then( user => {
+
+      //find all user Trips
+      user.getTrips().then(userTrips => {
+
+        //for each trip, create an output object
+        userTrips.forEach(userTrip => {
+          var counter = 0;
+          var small = {
+            trip: userTrip,
+            events: [],
+            restaurants: []
+          }
+
+          //then find all events and add to output object
+          userTrip.getEvents()
+          .then( tripEvents => small.events = tripEvents).then( () => {
+            userTrip.getRestaurants()
+            .then( tripRestaurants => small.restaurants = tripRestaurants)
+              .then(() => output.push(small)).then( () => {
+                counter += 1;
+                if (counter === userTrips.length) {
+                  cb(output);
+                }
+              })
+          })
+        })
+      })
+    })
   },
 
   newTrip: (obj) => {
@@ -138,7 +164,7 @@ var dbHelpers = {
           VenueLat: event.venues[0].location.latitude
         })
 
-        tempEvent.setTrip(trip);
+        tempEvent.setTrip(trip, {save: false});
         tempEvent.save();
       })
 
@@ -154,7 +180,7 @@ var dbHelpers = {
           restLat: restaurant.coordinates.latitude,
           categories: restaurant.categories
         })
-        tempRest.setTrip(trip);
+        tempRest.setTrip(trip, {save: false});
         tempRest.save();
       })
     })
@@ -233,6 +259,10 @@ var dbHelpers = {
     Restaurant.findAll().then(restaurants => restaurants.forEach(restaurant => restaurant.destroy()));
     Trip.findAll().then(trips => trips.forEach(trip => trip.destroy()));
     User.findAll().then(users => users.forEach(user => user.destroy()));
+  },
+
+  dropTables: () => {
+    return db.drop();
   }
 }
 

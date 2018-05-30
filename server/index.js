@@ -53,6 +53,18 @@ app.get('/cleardb', (req, res) => {
   res.status(200).end('test complete')
 })
 
+app.get('/dropdb', (req, res) => {
+  // console.log(db);
+  db.dropTables();
+
+  res.status(200).end('test complete')
+})
+
+app.get('/getusertrips', (req, res) => {
+  // console.log(db);
+  db.getUserTrips({email: 'ted.green@test.com'}, (obj) => res.status(200).end(JSON.stringify(obj)));
+})
+
 // Get restaurant list
 app.get('/restaurants/:location', (req, res) => {
   console.log(req.params.location);
