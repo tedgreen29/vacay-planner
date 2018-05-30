@@ -6,6 +6,7 @@ import FoodAndEventsPage from './components/FoodAndEventsPage/FoodAndEventsPage.
 import LandingPage from './components/LandingPage/LandingPage.jsx';
 import SignUpPage from './components/SignUpPage/SignUpPage.jsx';
 import LoginPage from './components/LoginPage/LoginPage.jsx';
+import MyTripsPage from './components/MyTripsPage/MyTripsPage.jsx';
 
 const Router = BrowserRouter;
 
@@ -27,6 +28,7 @@ class App extends React.Component {
           <Route path='/login' component={LoginPage} />
           <Route path='/signup' component={SignUpPage} />
           <Route path='/foodandevents' component={FoodAndEventsPage} />
+          <Route path='/mytrips' component={MyTripsPage} />
         </div>
       </Router>
     )
