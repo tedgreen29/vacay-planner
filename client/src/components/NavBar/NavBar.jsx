@@ -5,6 +5,11 @@ import { Menu } from 'semantic-ui-react';
 const NavBar = () => {
   return (
     <Menu borderless>
+      <Menu.Item position="left">
+        <NavLink to='/mytrips' activeClassName='active'>
+          My Trips
+        </NavLink>
+      </Menu.Item>
       <Menu.Item position="right">
         <NavLink to='/login' activeClassName='active'>
           Login

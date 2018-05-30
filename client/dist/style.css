@@ -1,6 +1,5 @@
 ul {
   padding: 0;
-  float: right;
  }
 
  li {
@@ -17,4 +16,9 @@ ul {
 
 .ui.grid {
   margin-left: 10px;
+}
+
+.container {
+  margin: 0 auto;
+  /* max-width: 1850px; */
 }
