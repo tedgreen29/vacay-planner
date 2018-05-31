@@ -145,29 +145,48 @@ var dbHelpers = {
 
       //find all user Trips
       user.getTrips().then(userTrips => {
+        cb(userTrips);
 
-        //for each trip, create an output object
-        userTrips.forEach(userTrip => {
-          var counter = 0;
-          var small = {
-            trip: userTrip,
-            events: [],
-            restaurants: []
-          }
 
-          //then find all events and add to output object
-          userTrip.getEvents()
-          .then( tripEvents => small.events = tripEvents).then( () => {
-            userTrip.getRestaurants()
-            .then( tripRestaurants => small.restaurants = tripRestaurants)
-              .then(() => output.push(small)).then( () => {
-                counter += 1;
-                if (counter === userTrips.length) {
-                  cb(output);
-                }
-              })
-          })
-        })
+
+        // //for each trip, create an output object
+        // userTrips.forEach(userTrip => {
+        //   var counter = 0;
+        //   var small = {
+        //     trip: userTrip,
+        //     events: [],
+        //     restaurants: []
+        //   }
+
+        //   //then find all events and add to output object
+        //   userTrip.getEvents()
+        //   .then( tripEvents => small.events = tripEvents).then( () => {
+        //     userTrip.getRestaurants()
+        //     .then( tripRestaurants => small.restaurants = tripRestaurants)
+        //       .then(() => output.push(small)).then( () => {
+        //         counter += 1;
+        //         if (counter === userTrips.length) {
+        //           cb(output);
+        //         }
+        //       })
+        //   })
+        // })
+      })
+    })
+  },
+
+  getTripItems: (tripId, cb) => {
+    Trip.findOne({id: tripId}).then(trip => {
+      output = {
+        events: [],
+        restaurants: []
+      }
+
+      trip.getEvents()
+      .then(tripEvents => output.events = tripEvents)
+      .then(() => {trip.getRestaurants()
+        .then(tripRestaurants => output.restaurants = tripRestaurants)
+        .then( () => cb(output) )
       })
     })
   },
