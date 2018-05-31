@@ -10,15 +10,18 @@ class MyTripsPageBody extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTrip: '1',
+      selectedTrip: 0,
+      allTrips: [],
       eventsSelected: [],
-      restaurantsSelected: []
+      restaurantsSelected: [],
+      activeIndex: null
     }
     this.updateSelection = this.updateSelection.bind(this);
   }
   
   componentDidMount() {
     this.updateSelection(this.state.selectedTrip);
+    this.getAllTrips()
   }
 
   handleClick(e, titleProps) {
@@ -26,7 +29,9 @@ class MyTripsPageBody extends React.Component {
     const { activeIndex } = this.state
     const newIndex = activeIndex === index ? -1 : index
 
-    this.setState({ activeIndex: newIndex })
+    this.setState({ 
+      activeIndex: newIndex 
+    })
   }
 
   updateSelection(tripId) {
@@ -35,13 +40,13 @@ class MyTripsPageBody extends React.Component {
         selectedTrip: tripId
       }
     })
-    this.getTripDetails(tripId);
+    this.getTripDetailsById(tripId);
   }
 
-  getTripDetails(tripId) {
+  getTripDetailsById(tripId) {
     $.ajax({
       type: 'GET',
-      url: '/trips',
+      url: `/trips/${tripId}`,
       success: result => {
         console.log(result)
         this.setState({
@@ -52,14 +57,29 @@ class MyTripsPageBody extends React.Component {
     })
   }
 
+  getAllTrips() {
+    $.ajax({
+      type: 'GET',
+      url: `/trips`,
+      success: result => {
+        let curretTrip = JSON.parse(result)[0].id;
+        this.setState({
+          selectedTrip: curretTrip,
+          allTrips: JSON.parse(result)
+        })
+      }
+    })
+  }
+
   render() {
-    const { activeIndex } = this.state
+    const {activeIndex} = this.state
     return (
       <div> 
         <Grid columns='equal' style={ { marginTop: 50, backgroundColor: 'white'} }>
           <Grid.Column floated='left' width={3}>
             <SelectTrip
               selectedTrip = {this.state.selectedTrip}
+              allTrips =  {this.state.allTrips}
               onSelect = {this.updateSelection}
             />
           </Grid.Column>
