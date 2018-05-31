@@ -169,7 +169,7 @@ app.post('/signup', (req, res) => {
         salt: salt
       }, (addedUser, err) => {
         if (addedUser) {
-          req.session.user = found.dataValues.email;
+          req.session.user = addedUser.dataValues.email;
           delete req.session.password;
           res.end(addedUser)
         } else if (err) {
