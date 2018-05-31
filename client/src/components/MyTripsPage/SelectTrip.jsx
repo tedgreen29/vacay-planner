@@ -21,7 +21,7 @@ function SelectTrip(props) {
 }
 
 SelectTrip.propTypes = {
-  selectedTrip: Proptypes.string.isRequired,
+  selectedTrip: Proptypes.number.isRequired,
   onSelect: Proptypes.func.isRequired
 };
 
