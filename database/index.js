@@ -183,7 +183,7 @@ var dbHelpers = {
       //create the Trip
       user.createTrip({
         start_date: obj.trip.startDate,
-        end_date: obj.trip.end_date,
+        end_date: obj.trip.endDate,
         name: obj.trip.name
       }).then(trip => {
 
