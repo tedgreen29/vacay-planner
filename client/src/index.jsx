@@ -10,25 +10,54 @@ import MyTripsPage from './components/MyTripsPage/MyTripsPage.jsx';
 
 const Router = BrowserRouter;
 
+// const testWrapper = (props) => {
+//   return (
+//     <LoginPage loginUser={this.loginUser} {...props} />
+//   )
+// }
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      user: null
     };
+    this.loginUser = this.loginUser.bind(this);
   }
 
   //write functions
-  testFunc() {
-    console.log("Why, hello there?")
+  loginUser(username, password) {
+    console.log("Output from app level")
+    // $.ajax({
+    //   url: '/login',
+    //   method: 'POST',
+    //   data: {username: username, password: password},
+    //   success: function(data) {
+    //     console.log("success!");
+    //   },
+    //   error: function(err) {
+    //     console.log(err);
+    //   }
+    // })
+    // AJAX w. username, password
+    // // in server:
+    //   server.createSesion(username password)
+    //   server.verify
+
+    // setState
   }
+
+
 
   render() {
     return (
       <Router>
         <div className='container'>
           <Route exact path='/' component={LandingPage} />
-          <Route path='/login' component={LoginPage} testFunc={this.testFunc} />
+          <Route path='/login' render={(props) => {
+            return (
+              <LoginPage loginUser={this.loginUser} {...props} />
+            )} }/>
           <Route path='/signup' component={SignUpPage} />
           <Route path='/foodandevents' component={FoodAndEventsPage} />
           <Route path='/mytrips' component={MyTripsPage} />

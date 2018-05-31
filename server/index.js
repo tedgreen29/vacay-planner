@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-var sessions = require("client-sessions");
+var session = require("client-sessions");
 
 
 const db = require('../database');
@@ -12,20 +12,21 @@ const PORT = 3000;
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(sessions({
-  cookieName: 'mySession', // cookie name dictates the key name added to the reqeust obj
-  secret: 'nimadebi',
-  duration: 30*60*1000,
-  activeDuration: 1000*60*5
-}));
-app.use((req, res, next) => {
-  if (req.mySession.seenyou) {
-    res.sestHeader('X-Seen-You', 'true');
-  } else {
-    req.mySession.seenyou = true;
-    res.setHeader('X-Seen-You','false');
-  }
-})
+
+// app.use(sessions({
+//   cookieName: 'mySession', // cookie name dictates the key name added to the reqeust obj
+//   secret: 'nimadebi',
+//   duration: 30*60*1000,
+//   activeDuration: 1000*60*5
+// }));
+// app.use((req, res, next) => {
+//   if (req.mySession.seenyou) {
+//     res.sestHeader('X-Seen-You', 'true');
+//   } else {
+//     req.mySession.seenyou = true;
+//     res.setHeader('X-Seen-You','false');
+//   }
+// })
 const homePath = __dirname + '/../client/dist';
 app.use(express.static(homePath));
 
@@ -89,6 +90,7 @@ app.get('/restaurants/:location', (req, res) => {
   }, req.params.location)
 });
 
+<<<<<<< HEAD
 // Get saved trips from database for a registered user
 app.get('/trips', (req, res) => {
   db.getUserTrips({email: 'ted.green@test.com'}, (obj) => res.status(200).end(JSON.stringify(obj)));
@@ -124,6 +126,12 @@ app.post('/trips', (req, res) => {
   db.newTrip(obj)
   res.status(200).end('successfully added trip')
 })
+=======
+// app.post('/login', (req, res) => {
+//   res.send("ouch!");
+//   console.log("ouch!")
+// })
+>>>>>>> successfully passes props to LoginPage component thru route
 
 app.listen(process.env.PORT !== undefined ? process.env.PORT : PORT, () => {
   console.log(`listening on port ${PORT}`);
