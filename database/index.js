@@ -156,7 +156,7 @@ var dbHelpers = {
   // given a Trip ID, which you can technically
   // only get when passing a
   getTripItems: (tripId, cb) => {
-    Trip.findOne({id: tripId}).then(trip => {
+    Trip.findOne({where: {id: tripId}}).then(trip => {
       output = {
         events: [],
         restaurants: []

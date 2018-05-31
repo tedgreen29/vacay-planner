@@ -16,15 +16,17 @@ class FoodAndEventsPageBody extends React.Component {
             <FoodTabContent
               restaurantList={this.props.restaurantList}
               toggleFavorite={this.props.toggleFavorite}
-            />
+              foodFavorites={this.props.foodFavorites}
+              />
           </Tab.Pane>
       },
       {
         menuItem: 'Events', render: () =>
-          <Tab.Pane>
+        <Tab.Pane>
             <EventsTabContent
               eventsList={this.props.eventsList}
               toggleFavorite={this.props.toggleFavorite}
+              eventFavorites={this.props.eventFavorites}
             />
           </Tab.Pane>
       }
