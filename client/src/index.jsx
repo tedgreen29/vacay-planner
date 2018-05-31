@@ -19,13 +19,16 @@ class App extends React.Component {
   }
 
   //write functions
+  testFunc() {
+    console.log("Why, hello there?")
+  }
 
   render() {
     return (
       <Router>
         <div className='container'>
           <Route exact path='/' component={LandingPage} />
-          <Route path='/login' component={LoginPage} />
+          <Route path='/login' component={LoginPage} testFunc={this.testFunc} />
           <Route path='/signup' component={SignUpPage} />
           <Route path='/foodandevents' component={FoodAndEventsPage} />
           <Route path='/mytrips' component={MyTripsPage} />

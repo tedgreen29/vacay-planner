@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
-const LoginPage = () => (
+const LoginPage = (props) => (
   <div className='login-form'>
     <style>{`
       body > div,
@@ -23,12 +23,14 @@ const LoginPage = () => (
         <Form size='large'>
           <Segment stacked>
             <Form.Input
+              label='email'
               fluid
               icon='user'
               iconPosition='left'
               placeholder='E-mail address'
             />
             <Form.Input
+              label='password'
               fluid
               icon='lock'
               iconPosition='left'
@@ -42,6 +44,7 @@ const LoginPage = () => (
         <Message>
           New to us? <Link className='signup' to='/signup'>Sign Up</Link>
         </Message>
+        <div>{props.testFunc()}</div>
       </Grid.Column>
     </Grid>
   </div>
