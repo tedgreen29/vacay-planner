@@ -11,17 +11,16 @@ class LoginPage extends React.Component {
       email: '',
       password: ''
     }
-    this.setState = this.setState.bind(this);
   }
 
-  handleChange = (e, { name, value }) =>  console.log("WHat is this? ", this);
-    // this.setState({
-    //   [name]: value
-    // })
+  handleChange(e, { name, value }) {
+    this.setState({
+      [name]: value
+    })
+  }
 
 
   render() {
-    const { email, password } = this.state;
 
     return (
       <div className='login-form'>
@@ -46,8 +45,8 @@ class LoginPage extends React.Component {
                 <Form.Input
                   label='email'
                   name='email'
-                  value={email}
-                  onChange={this.handleChange}
+                  value={this.state.email}
+                  onChange={this.handleChange.bind(this)}
                   fluid
                   icon='user'
                   iconPosition='left'
@@ -56,8 +55,8 @@ class LoginPage extends React.Component {
                 <Form.Input
                   label='password'
                   name='password'
-                  value={password}
-                  onChange={this.handleChange}
+                  value={this.state.password}
+                  onChange={this.handleChange.bind(this)}
                   fluid
                   icon='lock'
                   iconPosition='left'

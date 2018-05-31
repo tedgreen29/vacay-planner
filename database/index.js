@@ -35,8 +35,8 @@ db
 const User = db.define('users', {
   id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
   email: {type: Sequelize.STRING, unique: true},
-  password: {type: Sequelize.STRING, allowNull: false}/*,
-  salt: {type: Sequelize.STRING, allowNull: false}*/
+  password: {type: Sequelize.STRING, allowNull: false},
+  salt: {type: Sequelize.STRING, allowNull: false}
 });
 
 const Trip = db.define('trips', {
@@ -114,15 +114,16 @@ var dbHelpers = {
 
   // This function adds a new user if one is passed as an object
   // and is
-  addUser: (obj) => {
+  addUser: (obj, cb) => {
     User.findOne({email: obj.email}).then(user => {
       if (user === null || user === []) {
         User.create({
           email: obj.email,
-          password: obj.password
-        })
+          password: obj.password,
+          salt: obj.salt
+        }).then(user => cb(null, true))
       } else {
-        console.log(`User with email ${obj.email} already exists`);
+        cb(user, null)
       }
     });
   },
@@ -130,7 +131,7 @@ var dbHelpers = {
   // This will find a user and pass it to a callback,
   // which is needed for authentication to work
   findUser: (obj, cb) => {
-    User.findOne({email: obj.email}).then(user => cb(user))
+    User.findOne({where: {email: obj.email}}).then(user => cb(user))
   },
 
   // This will find a given user's Trips
@@ -146,35 +147,14 @@ var dbHelpers = {
       //find all user Trips
       user.getTrips().then(userTrips => {
         cb(userTrips);
-
-
-
-        // //for each trip, create an output object
-        // userTrips.forEach(userTrip => {
-        //   var counter = 0;
-        //   var small = {
-        //     trip: userTrip,
-        //     events: [],
-        //     restaurants: []
-        //   }
-
-        //   //then find all events and add to output object
-        //   userTrip.getEvents()
-        //   .then( tripEvents => small.events = tripEvents).then( () => {
-        //     userTrip.getRestaurants()
-        //     .then( tripRestaurants => small.restaurants = tripRestaurants)
-        //       .then(() => output.push(small)).then( () => {
-        //         counter += 1;
-        //         if (counter === userTrips.length) {
-        //           cb(output);
-        //         }
-        //       })
-        //   })
-        // })
       })
     })
   },
 
+  // This will get all trip items
+  // (Events & Restaurants) when
+  // given a Trip ID, which you can technically
+  // only get when passing a
   getTripItems: (tripId, cb) => {
     Trip.findOne({id: tripId}).then(trip => {
       output = {
@@ -194,9 +174,9 @@ var dbHelpers = {
   // This will create a new Trip
   // and save all associated Events
   // & Restaurants to the Database
-  newTrip: (obj) => {
+  newTrip: (email, obj) => {
 
-    User.findOne({where: obj.user.email}).then(user => {
+    User.findOne({where: {email: email}}).then(user => {
 
 
       //create the Trip

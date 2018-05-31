@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { $ } from 'jquery';
+import $ from 'jquery';
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import FoodAndEventsPage from './components/FoodAndEventsPage/FoodAndEventsPage.jsx';
@@ -18,34 +18,44 @@ class App extends React.Component {
       user: null
     };
     this.loginUser = this.loginUser.bind(this);
+    this.signUpUser = this.signUpUser.bind(this);
   }
 
   //write functions
 
-  loginUser(username, password) {
-    console.log('username: ', username);
+  loginUser(email, password) {
+    console.log('email: ', email);
     console.log('password: ', password);
-    // let formData = {
-    //   username: getFieldValue
-    // }
-    // $.ajax({
-    //   url: '/login',
-    //   method: 'POST',
-    //   data: {username: username, password: password},
-    //   success: function(data) {
-    //     console.log("success!");
-    //   },
-    //   error: function(err) {
-    //     console.log(err);
-    //   }
-    // })
-    // AJAX w. username, password
-    // // in server:
-    //   server.createSesion(username password)
-    //   server.verify
+
+    $.ajax({
+      url: '/login',
+      method: 'POST',
+      data: {email: email, password: password},
+      success: function(data) {
+        console.log("success!");
+      },
+      error: function(err) {
+        console.log(err);
+      }
+    })
   }
 
+  signUpUser(email, password) {
+    console.log('email: ', email);
+    console.log('password: ', password);
 
+    $.ajax({
+      url: '/signup',
+      method: 'POST',
+      data: {email: email, password: password},
+      success: function(data) {
+        console.log("success!");
+      },
+      error: function(err) {
+        console.log(err);
+      }
+    })
+  }
 
   render() {
     return (
@@ -56,7 +66,10 @@ class App extends React.Component {
             return (
               <LoginPage loginUser={this.loginUser} {...props} />
             )} }/>
-          <Route path='/signup' component={SignUpPage} />
+          <Route path='/signup' render={(props) => {
+            return (
+              <SignUpPage signUpUser={this.signUpUser} {...props} />
+            )} }/>
           <Route path='/foodandevents' component={FoodAndEventsPage} />
           <Route path='/mytrips' component={MyTripsPage} />
         </div>

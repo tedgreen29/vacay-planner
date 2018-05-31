@@ -22,6 +22,7 @@
     "babel-preset-react": "^6.23.0"
   },
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.5.1",
     "body-parser": "^1.17.2",
     "client-sessions": "^0.8.0",

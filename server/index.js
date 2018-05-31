@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-var session = require("client-sessions");
+const session = require('client-sessions');
+const bcrypt = require('bcrypt-nodejs')
 
 
 const db = require('../database');
@@ -13,10 +14,20 @@ const PORT = 3000;
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-// app.girreq.mySession.seenyou = true;
-//     res.setHeader('X-Seen-You','false');
-//   }
-// })
+app.use(session({
+  cookieName: 'session', // cookie name dictates the key name added to the request object
+  secret: 'thisthingissupersecretandunguessable', // should be a large unguessable string
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
+  cookie: {
+    // path: '/api', // cookie will only be sent to requests under '/api'
+    maxAge: 60 * 60 * 1000, // duration of the cookie in milliseconds, defaults to duration above
+    ephemeral: false, // when true, cookie expires when the browser closes
+    httpOnly: true, // when true, cookie is not accessible from javascript
+    secure: false
+  }
+}));
+
 const homePath = __dirname + '/../client/dist';
 app.use(express.static(homePath));
 
@@ -82,7 +93,11 @@ app.get('/restaurants/:location', (req, res) => {
 
 // Get saved trips from database for a registered user
 app.get('/trips', (req, res) => {
-  db.getUserTrips({email: 'ted.green@test.com'}, (obj) => res.status(200).end(JSON.stringify(obj)));
+  if (req.session.email !== null) {
+    db.getUserTrips({email: req.session.email}, (obj) => res.status(200).end(JSON.stringify(obj)))
+  } else {
+    console.log('must be logged in to get trips')
+  }
 });
 
 app.get('/trips/:id', (req, res) => {
@@ -93,7 +108,6 @@ app.post('/trips', (req, res) => {
 
   /*
     sampleObject = {
-      user: {email: something},
       trip: {
         startDate: date,
         endDate: date,
@@ -111,9 +125,60 @@ app.post('/trips', (req, res) => {
       ]
     }
   */
+  if (req.session.email){
+    db.newTrip(req.session.email, obj)
+    res.status(200).end('successfully added trip')
 
-  db.newTrip(obj)
-  res.status(200).end('successfully added trip')
+  }
+})
+
+app.post('/login', (req, res) => {
+  let email = req.body.email;
+  let enteredPassword = req.body.email;
+
+  db.findUser(req.body, found => {
+    if (found) {
+      let salt = found.dataValues.salt;
+      bcrypt.hash(enteredPassword, salt, null, (err, encryptedPass) => {
+        if (found.dataValues.password === encryptedPass) {
+          req.session.user = found.dataValues.email;
+          delete req.session.password;
+          res.send(found.dataValues.email)
+        } else {
+          res.status(500).send('incorrect password').redirect('signup');
+        }
+      })
+    } else {
+      console.log('User Doesn\'t Exist');
+    }
+  })
+})
+
+app.post('/signup', (req, res) => {
+  let email = req.body.email;
+  let enteredPassword = req.body.email;
+
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(enteredPassword, salt, null, (err, hashedPass) => {
+      db.addUser({
+        email: req.body.email,
+        password: hashedPass,
+        salt: salt
+      }, (addedUser, err) => {
+        if (addedUser) {
+          req.session.user = found.dataValues.email;
+          delete req.session.password;
+          res.end(addedUser)
+        } else if (err) {
+          res.status(500).end('User already exists');
+        }
+      })
+    })
+  })
+})
+
+app.post('/logout', (req, res) => {
+  req.session.reset();
 })
 
 app.listen(process.env.PORT !== undefined ? process.env.PORT : PORT, () => {
