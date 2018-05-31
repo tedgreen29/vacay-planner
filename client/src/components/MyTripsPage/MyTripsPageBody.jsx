@@ -48,10 +48,9 @@ class MyTripsPageBody extends React.Component {
       type: 'GET',
       url: `/trips/${tripId}`,
       success: result => {
-        console.log(result)
         this.setState({
-          eventsSelected: JSON.parse(result)[0].events,
-          restaurantsSelected: JSON.parse(result)[0].restaurants
+          eventsSelected: JSON.parse(result).events,
+          restaurantsSelected: JSON.parse(result).restaurants
         })
       }
     })
