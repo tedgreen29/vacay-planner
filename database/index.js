@@ -145,29 +145,48 @@ var dbHelpers = {
 
       //find all user Trips
       user.getTrips().then(userTrips => {
+        cb(userTrips);
 
-        //for each trip, create an output object
-        userTrips.forEach(userTrip => {
-          var counter = 0;
-          var small = {
-            trip: userTrip,
-            events: [],
-            restaurants: []
-          }
 
-          //then find all events and add to output object
-          userTrip.getEvents()
-          .then( tripEvents => small.events = tripEvents).then( () => {
-            userTrip.getRestaurants()
-            .then( tripRestaurants => small.restaurants = tripRestaurants)
-              .then(() => output.push(small)).then( () => {
-                counter += 1;
-                if (counter === userTrips.length) {
-                  cb(output);
-                }
-              })
-          })
-        })
+
+        // //for each trip, create an output object
+        // userTrips.forEach(userTrip => {
+        //   var counter = 0;
+        //   var small = {
+        //     trip: userTrip,
+        //     events: [],
+        //     restaurants: []
+        //   }
+
+        //   //then find all events and add to output object
+        //   userTrip.getEvents()
+        //   .then( tripEvents => small.events = tripEvents).then( () => {
+        //     userTrip.getRestaurants()
+        //     .then( tripRestaurants => small.restaurants = tripRestaurants)
+        //       .then(() => output.push(small)).then( () => {
+        //         counter += 1;
+        //         if (counter === userTrips.length) {
+        //           cb(output);
+        //         }
+        //       })
+        //   })
+        // })
+      })
+    })
+  },
+
+  getTripItems: (tripId, cb) => {
+    Trip.findOne({id: tripId}).then(trip => {
+      output = {
+        events: [],
+        restaurants: []
+      }
+
+      trip.getEvents()
+      .then(tripEvents => output.events = tripEvents)
+      .then(() => {trip.getRestaurants()
+        .then(tripRestaurants => output.restaurants = tripRestaurants)
+        .then( () => cb(output) )
       })
     })
   },
@@ -177,13 +196,13 @@ var dbHelpers = {
   // & Restaurants to the Database
   newTrip: (obj) => {
 
-    User.findOne({where: obj.user}).then(user => {
+    User.findOne({where: obj.user.email}).then(user => {
 
 
       //create the Trip
       user.createTrip({
         start_date: obj.trip.startDate,
-        end_date: obj.trip.end_date,
+        end_date: obj.trip.endDate,
         name: obj.trip.name
       }).then(trip => {
 

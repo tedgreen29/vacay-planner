@@ -76,16 +76,32 @@ app.get('/restaurants/:location', (req, res) => {
 // Get saved trips from database for a registered user
 app.get('/trips', (req, res) => {
   db.getUserTrips({email: 'ted.green@test.com'}, (obj) => res.status(200).end(JSON.stringify(obj)));
-})
+});
+
+app.get('/trips/:id', (req, res) => {
+  db.getTripItems(req.params.id, (obj) => res.status(200).end(JSON.stringify(obj)));
+});
 
 app.post('/trips', (req, res) => {
 
   /*
     sampleObject = {
-      user: {},
-      trip: {},
-      events: [],
-      restaurants: []
+      user: {email: something},
+      trip: {
+        startDate: date,
+        endDate: date,
+        name: string
+      },
+      eventList: [
+        {ticketmaster event},
+        {ticketmaster event},
+        ...
+      ],
+      restaurantList: [
+        {yelp restaurant},
+        {yelp restaurant},
+        ...
+      ]
     }
   */
 
