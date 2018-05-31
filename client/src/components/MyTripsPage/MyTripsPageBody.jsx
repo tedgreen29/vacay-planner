@@ -1,7 +1,7 @@
 import React from 'react';
 import Proptypes from 'prop-types';
 import moment from 'moment';
-import { Grid,  Accordion, Icon } from 'semantic-ui-react';
+import { Grid, Accordion, Icon } from 'semantic-ui-react';
 import SelectTrip from './SelectTrip.jsx';
 import EventsList from './EventsList.jsx';
 import RestaurantsList from './RestaurantsList.jsx';
@@ -11,7 +11,7 @@ class MyTripsPageBody extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTrip: 0,
+      selectedTrip: 1,
       allTrips: [],
       eventsSelected: [],
       restaurantsSelected: [],
@@ -21,8 +21,8 @@ class MyTripsPageBody extends React.Component {
   }
   
   componentDidMount() {
-    this.updateSelection(this.state.selectedTrip);
     this.getAllTrips()
+    this.updateSelection(this.state.selectedTrip);
   }
 
   handleClick(e, titleProps) {
@@ -85,21 +85,21 @@ class MyTripsPageBody extends React.Component {
           </Grid.Column>
           <Grid.Column floated='right' width={13}>
             <Accordion fluid styled>
-              <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick.bind(this)}>
-                <Icon name='dropdown' />
+              <Accordion.Title style={ { color: '#d0021b', fontSize: 20} } active={activeIndex === 0} index={0} onClick={this.handleClick.bind(this)}>
+                <Icon name='dropdown'/>
                 Saved Events
               </Accordion.Title>
               <Accordion.Content active={activeIndex === 0}>
                 <p> </p>
-                {!this.state.eventsSelected ? <p>Loading....</p> : <EventsList eventsSelected={this.state.eventsSelected}/>}
+                {!this.state.eventsSelected.length ? <p>No Saved Events</p> : <EventsList eventsSelected={this.state.eventsSelected}/>}
               </Accordion.Content>
-              <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleClick.bind(this)}>
+              <Accordion.Title style={ { color: '#d0021b', fontSize: 20} } active={activeIndex === 1} index={1} onClick={this.handleClick.bind(this)}>
                 <Icon name='dropdown' />
                 Saved Restaurants
               </Accordion.Title>
               <Accordion.Content active={activeIndex === 1}>
                 <p> </p>
-                {!this.state.restaurantsSelected ? <p>Loading....</p> : <RestaurantsList restaurantsSelected={this.state.restaurantsSelected}/>}
+                {!this.state.restaurantsSelected.length ? <p>No Saved Restaurants</p> : <RestaurantsList restaurantsSelected={this.state.restaurantsSelected}/>}
               </Accordion.Content>
             </Accordion>
           </Grid.Column>
