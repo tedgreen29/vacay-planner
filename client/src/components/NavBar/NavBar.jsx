@@ -4,7 +4,7 @@ import { Menu } from 'semantic-ui-react';
 
 const NavBar = () => {
   return (
-    <Menu borderless>
+    <Menu borderless pointing fixed='top'>
       <Menu.Item position="left">
         <NavLink to='/mytrips' activeClassName='active'>
           My Trips
