@@ -115,7 +115,7 @@ var dbHelpers = {
   // This function adds a new user if one is passed as an object
   // and is
   addUser: (obj, cb) => {
-    User.findOne({email: obj.email}).then(user => {
+    User.findOne({where: {email: obj.email}}).then(user => {
       if (user === null || user === []) {
         User.create({
           email: obj.email,
