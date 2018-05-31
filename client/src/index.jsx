@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { $ } from 'jquery';
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import FoodAndEventsPage from './components/FoodAndEventsPage/FoodAndEventsPage.jsx';
@@ -9,12 +10,6 @@ import LoginPage from './components/LoginPage/LoginPage.jsx';
 import MyTripsPage from './components/MyTripsPage/MyTripsPage.jsx';
 
 const Router = BrowserRouter;
-
-// const testWrapper = (props) => {
-//   return (
-//     <LoginPage loginUser={this.loginUser} {...props} />
-//   )
-// }
 
 class App extends React.Component {
   constructor(props) {
@@ -26,8 +21,13 @@ class App extends React.Component {
   }
 
   //write functions
+
   loginUser(username, password) {
-    console.log("Output from app level")
+    console.log('username: ', username);
+    console.log('password: ', password);
+    // let formData = {
+    //   username: getFieldValue
+    // }
     // $.ajax({
     //   url: '/login',
     //   method: 'POST',
@@ -43,8 +43,6 @@ class App extends React.Component {
     // // in server:
     //   server.createSesion(username password)
     //   server.verify
-
-    // setState
   }
 
 
