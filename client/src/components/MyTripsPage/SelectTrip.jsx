@@ -3,21 +3,16 @@ import Proptypes from 'prop-types';
 import { Menu } from 'semantic-ui-react'
 
 function SelectTrip(props) {
-  const trips = {
-    '1' : 'trip 1',
-    '2' : 'trip 2',
-    '3' : 'trip 3'
-  };
   return (
     <Menu size='large' fixed='left' vertical style={{marginTop: 50}}>
-      {Object.keys(trips).map(tripId => {
+      {props.allTrips.map(trip => {
         return (
           <Menu.Item
-            style={tripId === props.selectedTrip ? { color: '#d0021b' } : null}
-            onClick={props.onSelect.bind(null, tripId)}
-            key={tripId}
+            style={trip.id === props.selectedTrip ? {color: '#d0021b'} : null}
+            onClick={props.onSelect.bind(null, trip.id)}
+            key={trip.id}
           >
-            {trips[tripId]}
+            {trip.tripName}
           </Menu.Item>
         )
       })}
@@ -26,7 +21,7 @@ function SelectTrip(props) {
 }
 
 SelectTrip.propTypes = {
-  selectedTrip: Proptypes.string.isRequired,
+  selectedTrip: Proptypes.number.isRequired,
   onSelect: Proptypes.func.isRequired
 };
 

@@ -6,7 +6,7 @@ function EventsList(props) {
   return (
     <div style={{marginTop: -25}}>
       {props.eventsSelected.map((event, index) => {
-        return ( 
+        return (
           <Card fluid key={event.id}>
             <Item.Group>
               <Item>
@@ -16,14 +16,14 @@ function EventsList(props) {
                   style={ {margin: 15} }
                 />
                 <Item.Content>
-                  <Item.Header style={ {marginTop: 20} } className='event-name'>
-                    { `${index + 1}. ${event.name}` }
+                  <Item.Header style={{marginTop: 20}} className='event-name'>
+                    {`${index + 1}. ${event.name}`}
                   </Item.Header>
                   <Item.Description>
                     <strong>{event.venueName}, </strong>{event.venueAddress}
                   </Item.Description>
                   <Item.Extra>
-                    <Label 
+                    <Label
                       style={ {textTransform: 'uppercase', backgroundColor: '#D3D3D3', color: '#2A2A2A'} }
                     >
                       {moment(event.start_date).format('MMM DD ddd')}
