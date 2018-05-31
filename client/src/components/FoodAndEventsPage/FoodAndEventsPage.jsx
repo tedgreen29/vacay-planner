@@ -14,9 +14,12 @@ class FoodAndEventsPage extends React.Component {
       location: 'San Francisco',
       eventsList: [],
       foodFavorites: [],
-      eventFavorites: []
+      eventFavorites: [],
+      tripName: ""
     };
     this.toggleFavorite = this.toggleFavorite.bind(this);
+    this.saveTrip = this.saveTrip.bind(this);
+    this.handleNameChange = this.handleNameChange.bind(this);
   }
 
   toggleFavorite(listIndex, listName) {
@@ -35,7 +38,44 @@ class FoodAndEventsPage extends React.Component {
       }
       this.setState({ eventFavorites: newEventFavorites });
     }
+  }
 
+  handleNameChange(event) {
+    this.setState({tripName: event.target.value});
+  }
+
+  saveTrip() {
+    var data = {
+      user: {email: 'ted.green@test.com'},
+      trip: {
+        start_date: new Date(),
+        end_date: new Date(),
+        name: this.state.tripName
+      },
+      eventList: this.state.eventFavorites.map(event => ({
+        name: event.name,
+        eventURL: event.url,
+        eventImg: event.images[0].url,
+        start_date: event.dates.start.dateTime,
+        venueName: event._embedded.venues[0].name,
+        venueLong: event._embedded.venues[0].location.longitude,
+        venueLat: event._embedded.venues[0].location.latitude,
+        venueAddress: `${event._embedded.venues[0].address.line1}, ${event._embedded.venues[0].city.name}, ${event._embedded.venues[0].state.stateCode} ${event._embedded.venues[0].postalCode}`
+      })),
+      restaurantList: this.state.foodFavorites.map(restaurant => ({
+        name: restaurant.name,
+        yelpURL: restaurant.url,
+        review_count: restaurant.review_count,
+        rating: restaurant.rating,
+        price: restaurant.price,
+        restLong: restaurant.coordinates.longitude,
+        restLat: restaurant.coordinates.latitude,
+        categories: restaurant.categories,
+        display_address: restaurant.location.display_address,
+        image_url: restaurant.image_url
+      }))
+    };
+    $.post('/trips', data, () => {}, 'json')
   }
 
   componentDidMount() {
@@ -94,6 +134,9 @@ class FoodAndEventsPage extends React.Component {
             <FoodAndEventsSidebar
               foodFavorites={this.state.foodFavorites}
               eventFavorites={this.state.eventFavorites}
+              saveTrip={this.saveTrip}
+              tripName={this.state.tripName}
+              onNameChange={this.handleNameChange}
             />
           </Grid.Column>
         </Grid.Row>
