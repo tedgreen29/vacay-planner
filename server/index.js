@@ -146,7 +146,7 @@ app.post('/login', (req, res) => {
         if (found.dataValues.password === encryptedPass) {
           req.session.user = found.dataValues.email;
           delete req.session.password;
-          res.send(found.dataValues.email)
+          res.status(200).send(found.dataValues.email)
         } else {
           res.status(500).send('incorrect password').redirect('signup');
         }
@@ -171,7 +171,7 @@ app.post('/signup', (req, res) => {
         if (addedUser) {
           req.session.user = addedUser.dataValues.email;
           delete req.session.password;
-          res.end(addedUser)
+          res.status(200).end(addedUser)
         } else if (err) {
           res.status(500).end('User already exists');
         }
