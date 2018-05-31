@@ -176,7 +176,7 @@ var dbHelpers = {
   },
 
   getTripItems: (tripId, cb) => {
-    Trip.findOne({id: tripId}).then(trip => {
+    Trip.findOne({where: {id: tripId}}).then(trip => {
       output = {
         events: [],
         restaurants: []
