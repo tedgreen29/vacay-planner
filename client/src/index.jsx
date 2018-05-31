@@ -31,10 +31,10 @@ class App extends React.Component {
       url: '/login',
       method: 'POST',
       data: {email: email, password: password},
-      success: function(data) {
-        console.log("success!");
+      success: (data) => {
+        this.setState({ user: data })
       },
-      error: function(err) {
+      error: (err) => {
         console.log(err);
       }
     })
@@ -48,10 +48,10 @@ class App extends React.Component {
       url: '/signup',
       method: 'POST',
       data: {email: email, password: password},
-      success: function(data) {
-        console.log("success!");
+      success: (data) => {
+        this.setState({ user: data })
       },
-      error: function(err) {
+      error: (err) => {
         console.log(err);
       }
     })
