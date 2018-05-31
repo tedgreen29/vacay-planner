@@ -4,6 +4,7 @@ import moment from 'moment';
 import { Grid,  Accordion, Icon } from 'semantic-ui-react';
 import SelectTrip from './SelectTrip.jsx';
 import EventsList from './EventsList.jsx';
+import RestaurantsList from './RestaurantsList.jsx';
 import $ from 'jquery';
 
 class MyTripsPageBody extends React.Component {
@@ -90,7 +91,7 @@ class MyTripsPageBody extends React.Component {
               </Accordion.Title>
               <Accordion.Content active={activeIndex === 0}>
                 <p> </p>
-            {!this.state.eventsSelected ? <p>Loading....</p> : <EventsList eventsSelected={this.state.eventsSelected}/>}
+                {!this.state.eventsSelected ? <p>Loading....</p> : <EventsList eventsSelected={this.state.eventsSelected}/>}
               </Accordion.Content>
               <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleClick.bind(this)}>
                 <Icon name='dropdown' />
@@ -98,7 +99,7 @@ class MyTripsPageBody extends React.Component {
               </Accordion.Title>
               <Accordion.Content active={activeIndex === 1}>
                 <p> </p>
-                Restaurant List
+                {!this.state.restaurantsSelected ? <p>Loading....</p> : <RestaurantsList restaurantsSelected={this.state.restaurantsSelected}/>}
               </Accordion.Content>
             </Accordion>
           </Grid.Column>
