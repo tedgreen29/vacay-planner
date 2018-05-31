@@ -105,7 +105,7 @@ app.post('/trips', (req, res) => {
     }
   */
 
-  db.newTrip(obj)
+  db.newTrip(req.body)
   res.status(200).end('successfully added trip')
 })
 
