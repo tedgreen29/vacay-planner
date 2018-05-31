@@ -85,6 +85,8 @@ class FoodAndEventsPage extends React.Component {
             <FoodAndEventsPageBody
               restaurantList={this.state.restaurantList}
               eventsList={this.state.eventsList}
+              foodFavorites={this.state.foodFavorites}
+              eventFavorites={this.state.eventFavorites}
               toggleFavorite={this.toggleFavorite}
             />
           </Grid.Column>
