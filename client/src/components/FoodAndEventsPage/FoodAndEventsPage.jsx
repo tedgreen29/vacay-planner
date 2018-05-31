@@ -18,22 +18,24 @@ class FoodAndEventsPage extends React.Component {
     };
     this.toggleFavorite = this.toggleFavorite.bind(this);
   }
- 
-  toggleFavorite(listIndex, listName) {
-    if(listName === 'food') {
-      let newFoodFavorites = this.state.foodFavorites.slice();
-      if(newFoodFavorites.includes(this.state.restaurantList[listIndex])) {
 
+  toggleFavorite(listIndex, listName) {
+    if (listName === 'food') {
+      let selectedFood = this.state.restaurantList[listIndex];
+      let newFoodFavorites = this.state.foodFavorites.filter(foodfav => foodfav.id !== selectedFood.id);
+      if (newFoodFavorites.length === this.state.foodFavorites.length) {
+        newFoodFavorites.push(this.state.restaurantList[listIndex]);
       }
-      
-      newFoodFavorites.push(this.state.restaurantList[listIndex]);
-      this.setState({foodFavorites: newFoodFavorites});
+      this.setState({ foodFavorites: newFoodFavorites });
     } else {
-      let newEventFavorites = this.state.eventFavorites.slice();
-      newEventFavorites.push(this.state.eventsList[listIndex])
-      this.setState({eventFavorites: newEventFavorites});
+      let selectedEvent = this.state.eventsList[listIndex];
+      let newEventFavorites = this.state.eventFavorites.filter(eventfav => eventfav.id !== selectedEvent.id);
+      if (newEventFavorites.length === this.state.eventFavorites.length) {
+        newEventFavorites.push(this.state.eventsList[listIndex]);
+      }
+      this.setState({ eventFavorites: newEventFavorites });
     }
-       
+
   }
 
   componentDidMount() {
@@ -50,7 +52,7 @@ class FoodAndEventsPage extends React.Component {
         console.log('result', result);
         this.setState({
           restaurantList: result.businesses
-        });    
+        });
       }
     });
   }
@@ -64,13 +66,13 @@ class FoodAndEventsPage extends React.Component {
         console.log('events', result);
         this.setState({
           eventsList: JSON.parse(result)
-        });    
+        });
       }
     });
   }
 
   render() {
-    return(
+    return (
       //Column width must add up to 16
       <Grid>
         <Grid.Row>
@@ -80,14 +82,14 @@ class FoodAndEventsPage extends React.Component {
         </Grid.Row>
         <Grid.Row>
           <Grid.Column width={10}>
-            <FoodAndEventsPageBody 
-              restaurantList={this.state.restaurantList} 
+            <FoodAndEventsPageBody
+              restaurantList={this.state.restaurantList}
               eventsList={this.state.eventsList}
               toggleFavorite={this.toggleFavorite}
             />
           </Grid.Column>
           <Grid.Column width={6}>
-            <FoodAndEventsSidebar 
+            <FoodAndEventsSidebar
               foodFavorites={this.state.foodFavorites}
               eventFavorites={this.state.eventFavorites}
             />
@@ -95,7 +97,7 @@ class FoodAndEventsPage extends React.Component {
         </Grid.Row>
       </Grid>
     )
-  }  
+  }
 };
 
 export default FoodAndEventsPage;
