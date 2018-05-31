@@ -82,10 +82,38 @@ app.post('/trips', (req, res) => {
 
   /*
     sampleObject = {
-      user: {},
-      trip: {},
-      events: [],
-      restaurants: []
+      user: {email: something},
+      trip: {
+        start_date: date,
+        end_date: date,
+        name: string
+      },
+      eventList: [
+        {
+          name: event.name,
+          eventURL: event.url,
+          eventImg: event.images[0].url,
+          start_date: event.dates.start.dateTime,
+          venueName: event._embedded.venues[0].name,
+          venueLong: event._embedded.venues[0].location.longitude,
+          venueLat: event._embedded.venues[0].location.latitude,
+          venueAddress: `${event._embedded.venues[0].address.line1}, ${event._embedded.venues[0].city.name}, ${event._embedded.venues[0].state.stateCode} ${event._embedded.venues[0].postalCode}`
+        }
+      ],
+      restaurantList: [
+        {
+          name: restaurant.name,
+            yelpURL: restaurant.url,
+            review_count: restaurant.review_count,
+            rating: restaurant.rating,
+            price: restaurant.price,
+            restLong: restaurant.coordinates.longitude,
+            restLat: restaurant.coordinates.latitude,
+            categories: restaurant.categories,
+            display_address: restaurant.location.display_address,
+            image_url: restaurant.image_url
+        }
+      ]
     }
   */
 

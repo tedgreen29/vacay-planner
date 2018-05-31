@@ -177,7 +177,7 @@ var dbHelpers = {
   // & Restaurants to the Database
   newTrip: (obj) => {
 
-    User.findOne({where: obj.user}).then(user => {
+    User.findOne({where: obj.user.email}).then(user => {
 
 
       //create the Trip
