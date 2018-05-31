@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, Card, Image, Icon, Input, Segment, Tab, Item } from 'semantic-ui-react';
 
+import FavFoodCard from './FavFoodCard.jsx';
+
 const FoodAndEventsSidebar = (props) => {
     const panes = [
         {
@@ -8,12 +10,8 @@ const FoodAndEventsSidebar = (props) => {
                 <Tab.Pane>
                     <Input focus placeholder="Enter your trip name here" /><br /><br />
                     <Card.Group>
-                        {props.favorites.map((fav, index) => {
-                            return (
-                            <Card fluid key={index}>
-                                {fav.name}
-                            </Card>
-                            );
+                        {props.foodFavorites.map((restaurant, index) => {
+                            return <FavFoodCard restaurant={restaurant} key={"favfood"+restaurant.id}/>;
                         })}
                     </Card.Group>
                 </Tab.Pane>

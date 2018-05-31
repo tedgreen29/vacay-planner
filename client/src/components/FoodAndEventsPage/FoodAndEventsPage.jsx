@@ -13,19 +13,27 @@ class FoodAndEventsPage extends React.Component {
       restaurantList: [],
       location: 'San Francisco',
       eventsList: [],
-      favorites: []
+      foodFavorites: [],
+      eventFavorites: []
     };
     this.toggleFavorite = this.toggleFavorite.bind(this);
   }
  
   toggleFavorite(listIndex, listName) {
-    let newFavorites = this.state.favorites.slice();
     if(listName === 'food') {
-      newFavorites.push(this.state.restaurantList[listIndex])
+      let newFoodFavorites = this.state.foodFavorites.slice();
+      if(newFoodFavorites.includes(this.state.restaurantList[listIndex])) {
+
+      }
+      
+      newFoodFavorites.push(this.state.restaurantList[listIndex]);
+      this.setState({foodFavorites: newFoodFavorites});
     } else {
-      newFavorites.push(this.state.eventsList[listIndex])
+      let newEventFavorites = this.state.eventFavorites.slice();
+      newEventFavorites.push(this.state.eventsList[listIndex])
+      this.setState({eventFavorites: newEventFavorites});
     }
-    this.setState({favorites: newFavorites});    
+       
   }
 
   componentDidMount() {
@@ -80,7 +88,8 @@ class FoodAndEventsPage extends React.Component {
           </Grid.Column>
           <Grid.Column width={6}>
             <FoodAndEventsSidebar 
-              favorites={this.state.favorites}
+              foodFavorites={this.state.foodFavorites}
+              eventFavorites={this.state.eventFavorites}
             />
           </Grid.Column>
         </Grid.Row>
