@@ -58,7 +58,7 @@ class FoodAndEventsPage extends React.Component {
     console.log(data)
     $.ajax({
       method: 'POST',
-      url: 'http://localhost:3000/trips',
+      url: '/trips',
       data: data,
       success: (data) => {console.log(data)},
       error: (err) => {console.log(err)},
