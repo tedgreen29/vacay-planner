@@ -44,6 +44,7 @@ class App extends React.Component {
       data: {email: email, password: password},
       success: (data) => {
         this.setState({ user: data })
+        console.log('here is the data for user: ', data)
       },
       error: (err) => {
         console.log(err);
@@ -74,6 +75,7 @@ class App extends React.Component {
         <div className='container'>
           <Route exact path='/' render={props => (
             <LandingPage 
+              user={this.state.user}
               startDate={this.state.startDate} 
               endDate={this.state.endDate} 
               onStartChange={this.handleStartChange}
@@ -88,7 +90,8 @@ class App extends React.Component {
               <SignUpPage signUpUser={this.signUpUser} {...props} />
             )} />
           <Route path='/foodandevents' render={props => (
-            <FoodAndEventsPage 
+            <FoodAndEventsPage
+              user={this.state.user} 
               startDate={this.state.startDate} 
               endDate={this.state.endDate}
               onStartChange={this.handleStartChange}

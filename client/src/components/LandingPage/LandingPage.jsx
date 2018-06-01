@@ -4,7 +4,9 @@ import LandingPageBody from './LandingPageBody.jsx';
 
 const LandingPage = (props) => (
   <div>
-    <NavBar />
+    <NavBar 
+      user={props.user}
+    />
     <LandingPageBody 
       history={props.history}
       startDate={props.startDate} 
