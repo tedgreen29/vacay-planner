@@ -15,10 +15,16 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null
+      user: null,
+      location: '',
+      startDate: new Date(),
+      endDate: new Date()
     };
     this.loginUser = this.loginUser.bind(this);
     this.signUpUser = this.signUpUser.bind(this);
+    this.handleLocationChange = this.handleLocationChange.bind(this);
+    this.handleStartDayChange = this.handleStartDayChange.bind(this);
+    this.handleEndDayChange = this.handleEndDayChange.bind(this);
   }
 
   //write functions
@@ -57,11 +63,28 @@ class App extends React.Component {
     })
   }
 
+  handleLocationChange(e) {
+    this.setState({
+      location: e.target.value
+    })
+  }
+
+  handleStartDayChange(day) {
+    this.setState({ startDate: day });
+  }
+
+  handleEndDayChange(day) {
+    this.setState({ endDate: day });
+  }
+
   render() {
     return (
       <Router>
         <div className='container'>
-          <Route exact path='/' component={LandingPage} />
+          <Route exact path='/' render={(props) => {
+            return (
+              <LandingPage handleLocationChange={this.handleLocationChange} handleStartDayChange={this.handleStartDayChange} handleEndDayChange={this.handleEndDayChange} {...props} />
+            )} }/>
           <Route path='/login' render={(props) => {
             return (
               <LoginPage loginUser={this.loginUser} {...props} />

@@ -8,7 +8,7 @@ module.exports = {
     // location = 'san francisco'
     const encodedURI = encodeURI(`https://api.yelp.com/v3/businesses/search?term=restaurants&location=${location}`)
     const authStr = 'Bearer '.concat(key);
-    console.log(encodedURI)
+    // console.log(encodedURI)
     const options = {
       url: encodedURI,
       headers: { Authorization: authStr }
