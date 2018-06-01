@@ -7,6 +7,11 @@ const NavBar = (props) => {
     props.user === null ?
     (
       <Menu borderless pointing fixed='top'>
+        <Menu.Item position="left">
+          <NavLink to='/' activeClassName='active'>
+            Trippin'
+          </NavLink>
+        </Menu.Item>
         <Menu.Item position="right">
           <NavLink to='/signup' activeClassName='active'>
             Sign Up
@@ -22,6 +27,11 @@ const NavBar = (props) => {
     :
     (
       <Menu borderless pointing fixed='top'>
+        <Menu.Item position="left">
+          <NavLink to='/' activeClassName='active'>
+            Trippin'
+          </NavLink>
+        </Menu.Item>
         <Menu.Item position="right">
           <NavLink to='/mytrips' activeClassName='active'>
             My Trips

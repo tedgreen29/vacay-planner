@@ -106,7 +106,7 @@ class App extends React.Component {
             )} }/>
           <Route path='/foodandevents' render={(props) => {
             return (
-              <FoodAndEventsPage inputLocation={this.state.location} startDate={this.state.startDate} endDate={this.state.endDate} {...props} />
+              <FoodAndEventsPage inputLocation={this.state.location} startDate={this.state.startDate} endDate={this.state.endDate} user={this.state.user} {...props} />
             )} }/>
           <Route path='/mytrips' render={(props) => {
             return (
