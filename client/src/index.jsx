@@ -8,6 +8,7 @@ import LandingPage from './components/LandingPage/LandingPage.jsx';
 import SignUpPage from './components/SignUpPage/SignUpPage.jsx';
 import LoginPage from './components/LoginPage/LoginPage.jsx';
 import MyTripsPage from './components/MyTripsPage/MyTripsPage.jsx';
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 
 const Router = BrowserRouter;
 
