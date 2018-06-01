@@ -11,7 +11,7 @@ class FoodAndEventsPageBody extends React.Component {
   render() {
     const panes = [
       {
-        menuItem: 'Food', render: () =>
+        menuItem: 'Restaurants', render: () =>
           <Tab.Pane>
             <FoodTabContent
               restaurantList={this.props.restaurantList}
