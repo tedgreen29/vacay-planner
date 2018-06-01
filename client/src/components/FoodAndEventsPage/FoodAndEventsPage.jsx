@@ -66,11 +66,6 @@ class FoodAndEventsPage extends React.Component {
   }
 
   componentDidMount() {
-    console.log({
-      startDate: this.props.startDate,
-      endDate: this.props.endDate,
-      location: this.props.inputLocation
-    })
     this.getRestaurantsByLocation(this.props.location);
     this.getEventsByLocationAndDate();
   }
@@ -79,8 +74,9 @@ class FoodAndEventsPage extends React.Component {
     console.log('test!!')
     $.ajax({
       type: 'GET',
-      url: `/restaurants/${location}`,
+      url: `/restaurants/${this.props.location}`,
       success: result => {
+        console.log('rests', result)
         this.setState({
           restaurantList: result.businesses
         });
