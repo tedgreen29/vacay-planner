@@ -2,10 +2,9 @@ import React from 'react';
 import { Card, Icon, Grid, Form, Button, Segment, Header } from 'semantic-ui-react';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import MomentLocaleUtils, {formatDate, parseDate} from 'react-day-picker/moment';
-
+import LocationSearchInput from './LocationSearchInput.jsx';
 
 const LandingPageBody = (props) => (
-
   <Grid verticalAlign="middle">
     <Grid.Row>
       <Grid.Column style={{ maxWidth: 450}}>
@@ -18,13 +17,13 @@ const LandingPageBody = (props) => (
               </Header>
 
               <Segment stacked>
-                <Form.Input
-                onChange={props.handleLocationChange}
-                type="text"
-                name="location"
-                label="City, State Code"/><br />
+                City, State:<br />
+                <LocationSearchInput handleChange={props.handleChange} 
+                  handleSelect={props.handleSelect} address={props.address}
+                  handleLocationChange={props.handleLocationChange}
+                />
+                <br /><br />
                 Start Date:<br />
-
                 <DayPickerInput
                 onDayChange={props.handleStartDayChange}
                 formatDate={formatDate}
@@ -51,7 +50,6 @@ const LandingPageBody = (props) => (
     </Grid.Row>
   </Grid>
 );
-//
-//
+
 
 export default LandingPageBody;
