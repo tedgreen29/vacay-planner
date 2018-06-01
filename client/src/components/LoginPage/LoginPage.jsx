@@ -40,7 +40,7 @@ class LoginPage extends React.Component {
             <Header as='h2' color='blue' textAlign='center'>
               {' '}Log-in to your account
             </Header>
-            <Form onSubmit={() => this.props.loginUser(this.state.email, this.state.password) } size='large'>
+            <Form onSubmit={() => this.props.loginUser(this.state.email, this.state.password, this.props.history) } size='large'>
               <Segment stacked>
                 <Form.Input
                   label='email'
