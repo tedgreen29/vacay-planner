@@ -15,9 +15,9 @@ const LandingPageBody = (props) => (
               Where to? <br />
               <input type="text" name="city" /><br />
               Start Date:<br />
-              <input type="text" name="startDate" /><br />
+              <input type="date" name="startDate" value={props.startDate} onChange={props.onStartChange}/><br />
               End Date:<br />
-              <input type="text" name="endDate" /><br />
+              <input type="date" name="endDate" value={props.endDate} onChange={props.onEndChange}/><br />
               <input type="text" name="page" value="foodandevents" readOnly hidden /> {/*Temporary routing*/}
               <button onClick={() => props.history.push('/foodandevents')}>Submit</button>
             </form>
