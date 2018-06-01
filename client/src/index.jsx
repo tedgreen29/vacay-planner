@@ -16,23 +16,19 @@ class App extends React.Component {
     super(props);
     this.state = {
       user: null,
-      startDate: "",
-      endDate: ""
+      location: '',
+      startDate: new Date(),
+      endDate: new Date()
     };
     this.loginUser = this.loginUser.bind(this);
     this.signUpUser = this.signUpUser.bind(this);
-    this.handleStartChange = this.handleStartChange.bind(this);
-    this.handleEndChange = this.handleEndChange.bind(this);
+    this.handleLocationChange = this.handleLocationChange.bind(this);
+    this.handleStartDayChange = this.handleStartDayChange.bind(this);
+    this.handleEndDayChange = this.handleEndDayChange.bind(this);
+    this.handleLogout = this.handleLogout.bind(this)
   }
 
   //write functions
-   handleStartChange(event) {
-    this.setState({startDate: event.target.value});
-   }
-
-   handleEndChange(event) {
-    this.setState({endDate: event.target.value});
-   }
 
   loginUser(email, password, history) {
     console.log('email: ', email);
@@ -42,6 +38,7 @@ class App extends React.Component {
       url: '/login',
       method: 'POST',
       data: {email: email, password: password},
+      dataType: 'json',
       success: (data) => {
         this.setState({ user: data })
         console.log('here is the data for user: ', data)
@@ -61,6 +58,7 @@ class App extends React.Component {
       url: '/signup',
       method: 'POST',
       data: {email: email, password: password},
+      dataType: 'json',
       success: (data) => {
         this.setState({ user: data })
       },
@@ -70,37 +68,50 @@ class App extends React.Component {
     })
   }
 
+  handleLocationChange(e) {
+    this.setState({
+      location: e.target.value
+    })
+  }
+
+  handleStartDayChange(day) {
+    this.setState({ startDate: day });
+  }
+
+  handleEndDayChange(day) {
+    this.setState({ endDate: day });
+  }
+
+  handleLogout() {
+    this.setState({user: null})
+  }
+
+
+
   render() {
     return (
       <Router>
         <div className='container'>
-          <Route exact path='/' render={props => (
-            <LandingPage 
-              user={this.state.user}
-              startDate={this.state.startDate} 
-              endDate={this.state.endDate} 
-              onStartChange={this.handleStartChange}
-              onEndChange={this.handleEndChange}
-              {...props} 
-            />
-          )}/>
-          <Route path='/login' render={(props) =>  (
+          <Route exact path='/' render={(props) => {
+            return (
+              <LandingPage handleLocationChange={this.handleLocationChange} handleStartDayChange={this.handleStartDayChange} handleEndDayChange={this.handleEndDayChange} user={this.state.user} handleLogout={this.handleLogout}{...props} />
+            )} }/>
+          <Route path='/login' render={(props) => {
+            return (
               <LoginPage loginUser={this.loginUser} {...props} />
-            )} />
-          <Route path='/signup' render={(props) =>  (
+            )} }/>
+          <Route path='/signup' render={(props) => {
+            return (
               <SignUpPage signUpUser={this.signUpUser} {...props} />
-            )} />
-          <Route path='/foodandevents' render={props => (
-            <FoodAndEventsPage
-              user={this.state.user} 
-              startDate={this.state.startDate} 
-              endDate={this.state.endDate}
-              onStartChange={this.handleStartChange}
-              onEndChange={this.handleEndChange} 
-              {...props} 
-            />
-          )}/>
-          <Route path='/mytrips' component={MyTripsPage} />
+            )} }/>
+          <Route path='/foodandevents' render={(props) => {
+            return (
+              <FoodAndEventsPage inputLocation={this.state.location} startDate={this.state.startDate} endDate={this.state.endDate} {...props} />
+            )} }/>
+          <Route path='/mytrips' render={(props) => {
+            return (
+              <MyTripsPage user={this.state.user} handleLogout={this.handleLogout} {...props} />
+            )} } />
         </div>
       </Router>
     )
