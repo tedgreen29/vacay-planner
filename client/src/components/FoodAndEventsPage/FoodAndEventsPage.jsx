@@ -48,8 +48,8 @@ class FoodAndEventsPage extends React.Component {
     var data = {
       user: {email: 'ted.green@test.com'},
       trip: {
-        start_date: new Date(),
-        end_date: new Date(),
+        start_date: this.props.startDate,
+        end_date: this.props.endDate,
         name: this.state.tripName
       },
       eventList: this.state.eventFavorites,

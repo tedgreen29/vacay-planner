@@ -15,13 +15,24 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null
+      user: null,
+      startDate: "",
+      endDate: ""
     };
     this.loginUser = this.loginUser.bind(this);
     this.signUpUser = this.signUpUser.bind(this);
+    this.handleStartChange = this.handleStartChange.bind(this);
+    this.handleEndChange = this.handleEndChange.bind(this);
   }
 
   //write functions
+   handleStartChange(event) {
+    this.setState({startDate: event.target.value});
+   }
+
+   handleEndChange(event) {
+    this.setState({endDate: event.target.value});
+   }
 
   loginUser(email, password) {
     console.log('email: ', email);
@@ -61,16 +72,30 @@ class App extends React.Component {
     return (
       <Router>
         <div className='container'>
-          <Route exact path='/' component={LandingPage} />
-          <Route path='/login' render={(props) => {
-            return (
+          <Route exact path='/' render={props => (
+            <LandingPage 
+              startDate={this.state.startDate} 
+              endDate={this.state.endDate} 
+              onStartChange={this.handleStartChange}
+              onEndChange={this.handleEndChange}
+              {...props} 
+            />
+          )}/>
+          <Route path='/login' render={(props) =>  (
               <LoginPage loginUser={this.loginUser} {...props} />
-            )} }/>
-          <Route path='/signup' render={(props) => {
-            return (
+            )} />
+          <Route path='/signup' render={(props) =>  (
               <SignUpPage signUpUser={this.signUpUser} {...props} />
-            )} }/>
-          <Route path='/foodandevents' component={FoodAndEventsPage} />
+            )} />
+          <Route path='/foodandevents' render={props => (
+            <FoodAndEventsPage 
+              startDate={this.state.startDate} 
+              endDate={this.state.endDate}
+              onStartChange={this.handleStartChange}
+              onEndChange={this.handleEndChange} 
+              {...props} 
+            />
+          )}/>
           <Route path='/mytrips' component={MyTripsPage} />
         </div>
       </Router>
