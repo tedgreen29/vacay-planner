@@ -116,14 +116,14 @@ var dbHelpers = {
   // and is
   addUser: (obj, cb) => {
     User.findOne({where: {email: obj.email}}).then(user => {
-      if (user === null || user === []) {
+      if (user === null) {
         User.create({
           email: obj.email,
           password: obj.password,
           salt: obj.salt
-        }).then(user => cb(null, true))
+        }).then(user => cb(user, false))
       } else {
-        cb(user, null)
+        cb(null, true)
       }
     });
   },

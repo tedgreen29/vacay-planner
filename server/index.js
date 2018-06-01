@@ -126,11 +126,11 @@ app.post('/trips', (req, res) => {
     }
   */
   if (req.session.email){
-    db.newTrip(req.body)
-    res.status(200).end('successfully added trip')
-
-    // db.newTrip(req.session.email, req.body)
+    // db.newTrip(req.body)
     // res.status(200).end('successfully added trip')
+
+    db.newTrip(req.session.email, req.body)
+    res.status(200).end('successfully added trip')
 
   }
 })
@@ -146,7 +146,7 @@ app.post('/login', (req, res) => {
         if (found.dataValues.password === encryptedPass) {
           req.session.user = found.dataValues.email;
           delete req.session.password;
-          res.status(200).send(found.dataValues.email)
+          res.status(200).send(JSON.stringify(found.dataValues.email));
         } else {
           res.status(500).send('incorrect password').redirect('signup');
         }
@@ -167,13 +167,13 @@ app.post('/signup', (req, res) => {
         email: req.body.email,
         password: hashedPass,
         salt: salt
-      }, (addedUser, err) => {
-        if (addedUser) {
+      }, (addedUser, error) => {
+        if (error === true) {
+          res.status(500).end('User already exists');
+        } else if (addedUser) {
           req.session.user = addedUser.dataValues.email;
           delete req.session.password;
-          res.status(200).end(addedUser)
-        } else if (err) {
-          res.status(500).end('User already exists');
+          res.status(200).end(JSON.stringify(addedUser.email));
         }
       })
     })
