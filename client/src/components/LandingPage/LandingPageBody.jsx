@@ -2,9 +2,6 @@ import React from 'react';
 import { Card, Icon, Grid } from 'semantic-ui-react';
 
 const LandingPageBody = (props) => (
-/*  <div>
-
-  </div> className="ui container center aligned"*/
   <Grid verticalAlign="middle">
     <Grid.Row>
       <Grid.Column>
@@ -13,7 +10,7 @@ const LandingPageBody = (props) => (
           <Card.Content extra>
             <form>
               Where to? <br />
-              <input type="text" name="city" /><br />
+              <input type="text" name="city" value='San Francisco, CA'/><br />
               Start Date:<br />
               <input type="date" name="startDate" value={props.startDate} onChange={props.onStartChange}/><br />
               End Date:<br />
