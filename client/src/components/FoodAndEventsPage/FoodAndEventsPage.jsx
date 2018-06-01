@@ -126,6 +126,7 @@ class FoodAndEventsPage extends React.Component {
           </Grid.Column>
           <Grid.Column width={6}>
             <FoodAndEventsSidebar
+              user={this.props.user}
               foodFavorites={this.state.foodFavorites}
               eventFavorites={this.state.eventFavorites}
               saveTrip={this.saveTrip}
