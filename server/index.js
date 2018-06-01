@@ -56,6 +56,11 @@ app.get('/dropdb', (req, res) => {
   res.status(200).end('Tables deleted, restart server to recreate')
 })
 
+app.get('/createdb', (req, res) => {
+  db.createDB();
+  res.status(200).end('Tables created')
+})
+
 /////////////////////////////////////////////////////////////////////
 //                            End                                  //
 /////////////////////////////////////////////////////////////////////
@@ -83,7 +88,7 @@ app.get('/events', (req, res) => {
 
 // Get restaurants from Yelp API
 app.get('/restaurants/:location', (req, res) => {
-  console.log(req.params.location);
+  // console.log(req.params.location);
   yelp.getRestaurants(req.params.location, data => {
     parsedData = JSON.parse(data);
     // console.log('parsedData', parsedData);
@@ -93,8 +98,9 @@ app.get('/restaurants/:location', (req, res) => {
 
 // Get saved trips from database for a registered user
 app.get('/trips', (req, res) => {
-  if (req.session.email !== null) {
-    db.getUserTrips({email: req.session.email}, (obj) => res.status(200).end(JSON.stringify(obj)))
+  console.log(req.session)
+  if (req.session.user !== null) {
+    db.getUserTrips({email: req.session.user}, (obj) => res.status(200).end(JSON.stringify(obj)))
   } else {
     console.log('must be logged in to get trips')
   }
@@ -125,13 +131,16 @@ app.post('/trips', (req, res) => {
       ]
     }
   */
-  if (req.session.email){
-    db.newTrip(req.body)
-    res.status(200).end('successfully added trip')
 
-    // db.newTrip(req.session.email, req.body)
+  if (req.session.user){
+    // db.newTrip(req.body)
     // res.status(200).end('successfully added trip')
 
+    db.newTrip(req.session.user, req.body)
+    res.status(200).end('successfully added trip')
+
+  } else {
+    res.status(500).end('error')
   }
 })
 

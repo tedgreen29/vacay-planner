@@ -52,30 +52,17 @@ class FoodAndEventsPage extends React.Component {
         end_date: new Date(),
         name: this.state.tripName
       },
-      eventList: this.state.eventFavorites.map(event => ({
-        name: event.name,
-        eventURL: event.url,
-        eventImg: event.images[0].url,
-        start_date: event.dates.start.dateTime,
-        venueName: event._embedded.venues[0].name,
-        venueLong: event._embedded.venues[0].location.longitude,
-        venueLat: event._embedded.venues[0].location.latitude,
-        venueAddress: `${event._embedded.venues[0].address.line1}, ${event._embedded.venues[0].city.name}, ${event._embedded.venues[0].state.stateCode} ${event._embedded.venues[0].postalCode}`
-      })),
-      restaurantList: this.state.foodFavorites.map(restaurant => ({
-        name: restaurant.name,
-        yelpURL: restaurant.url,
-        review_count: restaurant.review_count,
-        rating: restaurant.rating,
-        price: restaurant.price,
-        restLong: restaurant.coordinates.longitude,
-        restLat: restaurant.coordinates.latitude,
-        categories: restaurant.categories,
-        display_address: restaurant.location.display_address,
-        image_url: restaurant.image_url
-      }))
+      eventList: this.state.eventFavorites,
+      restaurantList: this.state.foodFavorites
     };
-    $.post('/trips', data, () => {}, 'json')
+    console.log(data)
+    $.ajax({
+      method: 'POST',
+      url: 'http://localhost:3000/trips',
+      data: data,
+      success: (data) => {console.log(data)},
+      error: (err) => {console.log(err)},
+      dataType: 'json'})
   }
 
   componentDidMount() {

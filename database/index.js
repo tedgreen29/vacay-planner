@@ -46,12 +46,12 @@ const Trip = db.define('trips', {
   tripName: {type: Sequelize.STRING, allowNull: false}
 })
 
-const Restaurant = db.define('restaurants', {
+var Restaurant = db.define('restaurants', {
   id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
   name: {type: Sequelize.STRING, allowNull: false},
   yelpURL: {type: Sequelize.STRING, allowNull: false},
   review_count: {type: Sequelize.INTEGER, allowNull: false},
-  rating: {type: Sequelize.INTEGER, allowNull: false},
+  rating: {type: Sequelize.FLOAT, allowNull: false},
   price: {type: Sequelize.STRING},
   restLong: Sequelize.FLOAT,
   restLat: Sequelize.FLOAT,
@@ -183,43 +183,50 @@ var dbHelpers = {
       user.createTrip({
         start_date: obj.trip.startDate,
         end_date: obj.trip.endDate,
-        name: obj.trip.name
+        tripName: obj.trip.name
       }).then(trip => {
 
-        //create the Events
-        obj.eventList.forEach(event => {
-          var tempEvent = Event.define({
-            name: event.name,
-            eventURL: event.url,
-            eventImg: event.images[0].url,
-            start_date: event.dates.start.dateTime,
-            venueName: event._embedded.venues[0].name,
-            venueLong: event._embedded.venues[0].location.longitude,
-            venueLat: event._embedded.venues[0].location.latitude,
-            venueAddress: `${event._embedded.venues[0].address.line1}, ${event._embedded.venues[0].city.name}, ${event._embedded.venues[0].state.stateCode} ${event._embedded.venues[0].postalCode}`
+        //create the Events if they exist
+        if (obj.eventList !== undefined) {
+          obj.eventList.forEach(event => {
+            var tempEvent = Event.build({
+              name: event.name,
+              eventURL: event.url,
+              eventImg: event.images[0].url,
+              start_date: event.dates.start.dateTime,
+              venueName: event._embedded.venues[0].name,
+              venueLong: event._embedded.venues[0].location.longitude,
+              venueLat: event._embedded.venues[0].location.latitude,
+              venueAddress: `${event._embedded.venues[0].address.line1}, ${event._embedded.venues[0].city.name}, ${event._embedded.venues[0].state.stateCode} ${event._embedded.venues[0].postalCode}`
+            })
+
+            tempEvent.setTrip(trip, {save: false});
+            tempEvent.save();
           })
 
-          tempEvent.setTrip(trip, {save: false});
-          tempEvent.save();
-        })
+        }
 
-        //create the Restaurants
-        obj.restaurantList.forEach(restaurant => {
-          var tempRest = Restaurant.define({
-            name: restaurant.name,
-            yelpURL: restaurant.url,
-            review_count: restaurant.review_count,
-            rating: restaurant.rating,
-            price: restaurant.price,
-            restLong: restaurant.coordinates.longitude,
-            restLat: restaurant.coordinates.latitude,
-            categories: restaurant.categories,
-            display_address: restaurant.location.display_address,
-            image_url: restaurant.image_url
+        //create the Restaurants if they exist
+        if (obj.restaurantList !== undefined) {
+          obj.restaurantList.forEach(restaurant => {
+            console.log(Restaurant)
+            var tempRest = Restaurant.build({
+              name: restaurant.name,
+              yelpURL: restaurant.url,
+              review_count: restaurant.review_count,
+              rating: restaurant.rating,
+              price: restaurant.price,
+              restLong: restaurant.coordinates.longitude,
+              restLat: restaurant.coordinates.latitude,
+              categories: restaurant.categories,
+              display_address: restaurant.location.display_address,
+              image_url: restaurant.image_url
+            })
+            tempRest.setTrip(trip, {save: false});
+            tempRest.save();
           })
-          tempRest.setTrip(trip, {save: false});
-          tempRest.save();
-        })
+
+        }
       })
     })
   },
@@ -232,7 +239,8 @@ var dbHelpers = {
     //create test user
     var testUser = User.build({
       email: 'ted.green@test.com',
-      password: 'abc123'
+      password: '$2a$10$DmNvl3i1xAY7FDhHwZGsT.HQh7EBsm1BetQEpBC2PPKKKV6l252UW',
+      salt: '$2a$10$DmNvl3i1xAY7FDhHwZGsT.w'
     });
 
     //save test user
@@ -318,6 +326,10 @@ var dbHelpers = {
   // to be restarted to recreate the database tables again
   dropTables: () => {
     return db.drop();
+  },
+
+  createDB: () => {
+    User.sync().then(() => Trip.sync().then(() => Restaurant.sync().then(() => Event.sync())));
   }
 }
 
