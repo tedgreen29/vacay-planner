@@ -113,7 +113,9 @@ class FoodAndEventsPage extends React.Component {
       <Grid>
         <Grid.Row>
           <Grid.Column floated="right">
-            <NavBar />
+            <NavBar 
+            user={this.props.user}
+            />
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
