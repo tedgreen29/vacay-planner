@@ -1,10 +1,13 @@
 import React from 'react';
-import { Button, Card, Image, Icon, Item, Segment } from 'semantic-ui-react';
+import { Image, List } from 'semantic-ui-react';
 
 const FavFoodCard = (props) => (
-    <Card fluid>
-        {props.restaurant.name}
-    </Card>
+  <List.Item>
+    <Image avatar src={props.restaurant.image_url} />
+    <List.Content>
+      <List.Header>{props.restaurant.name}</List.Header>
+    </List.Content>
+  </List.Item>
 );
 
 export default FavFoodCard;
