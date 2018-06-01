@@ -29,7 +29,7 @@ class App extends React.Component {
 
   //write functions
 
-  loginUser(email, password) {
+  loginUser(email, password, history) {
     console.log('email: ', email);
     console.log('password: ', password);
 
@@ -39,6 +39,8 @@ class App extends React.Component {
       data: {email: email, password: password},
       success: (data) => {
         this.setState({ user: data })
+        console.log('here is the data for user: ', data)
+        history.push('/')
       },
       error: (err) => {
         console.log(err);
