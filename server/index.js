@@ -126,11 +126,11 @@ app.post('/trips', (req, res) => {
     }
   */
   if (req.session.email){
-    // db.newTrip(req.body)
-    // res.status(200).end('successfully added trip')
-
-    db.newTrip(req.session.email, req.body)
+    db.newTrip(req.body)
     res.status(200).end('successfully added trip')
+
+    // db.newTrip(req.session.email, req.body)
+    // res.status(200).end('successfully added trip')
 
   }
 })
