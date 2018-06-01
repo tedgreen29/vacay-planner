@@ -25,6 +25,7 @@ class App extends React.Component {
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleStartDayChange = this.handleStartDayChange.bind(this);
     this.handleEndDayChange = this.handleEndDayChange.bind(this);
+    this.handleLogout = this.handleLogout.bind(this)
   }
 
   //write functions
@@ -37,6 +38,7 @@ class App extends React.Component {
       url: '/login',
       method: 'POST',
       data: {email: email, password: password},
+      dataType: 'json',
       success: (data) => {
         this.setState({ user: data })
         console.log('here is the data for user: ', data)
@@ -56,6 +58,7 @@ class App extends React.Component {
       url: '/signup',
       method: 'POST',
       data: {email: email, password: password},
+      dataType: 'json',
       success: (data) => {
         this.setState({ user: data })
       },
@@ -79,6 +82,10 @@ class App extends React.Component {
     this.setState({ endDate: day });
   }
 
+  handleLogout() {
+    this.setState({user: null})
+  }
+
 
 
   render() {
@@ -87,7 +94,7 @@ class App extends React.Component {
         <div className='container'>
           <Route exact path='/' render={(props) => {
             return (
-              <LandingPage handleLocationChange={this.handleLocationChange} handleStartDayChange={this.handleStartDayChange} handleEndDayChange={this.handleEndDayChange} {...props} />
+              <LandingPage handleLocationChange={this.handleLocationChange} handleStartDayChange={this.handleStartDayChange} handleEndDayChange={this.handleEndDayChange} user={this.state.user} handleLogout={this.handleLogout}{...props} />
             )} }/>
           <Route path='/login' render={(props) => {
             return (
@@ -101,7 +108,10 @@ class App extends React.Component {
             return (
               <FoodAndEventsPage inputLocation={this.state.location} startDate={this.state.startDate} endDate={this.state.endDate} {...props} />
             )} }/>
-          <Route path='/mytrips' component={MyTripsPage} />
+          <Route path='/mytrips' render={(props) => {
+            return (
+              <MyTripsPage user={this.state.user} handleLogout={this.handleLogout} {...props} />
+            )} } />
         </div>
       </Router>
     )
