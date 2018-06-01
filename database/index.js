@@ -35,8 +35,8 @@ db
 const User = db.define('users', {
   id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
   email: {type: Sequelize.STRING, unique: true},
-  password: {type: Sequelize.STRING, allowNull: false}/*,
-  salt: {type: Sequelize.STRING, allowNull: false}*/
+  password: {type: Sequelize.STRING, allowNull: false},
+  salt: {type: Sequelize.STRING, allowNull: false}
 });
 
 const Trip = db.define('trips', {
@@ -46,12 +46,12 @@ const Trip = db.define('trips', {
   tripName: {type: Sequelize.STRING, allowNull: false}
 })
 
-const Restaurant = db.define('restaurants', {
+var Restaurant = db.define('restaurants', {
   id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
   name: {type: Sequelize.STRING, allowNull: false},
   yelpURL: {type: Sequelize.STRING, allowNull: false},
   review_count: {type: Sequelize.INTEGER, allowNull: false},
-  rating: {type: Sequelize.INTEGER, allowNull: false},
+  rating: {type: Sequelize.FLOAT, allowNull: false},
   price: {type: Sequelize.STRING},
   restLong: Sequelize.FLOAT,
   restLat: Sequelize.FLOAT,
@@ -114,15 +114,16 @@ var dbHelpers = {
 
   // This function adds a new user if one is passed as an object
   // and is
-  addUser: (obj) => {
-    User.findOne({email: obj.email}).then(user => {
-      if (user === null || user === []) {
+  addUser: (obj, cb) => {
+    User.findOne({where: {email: obj.email}}).then(user => {
+      if (user === null) {
         User.create({
           email: obj.email,
-          password: obj.password
-        })
+          password: obj.password,
+          salt: obj.salt
+        }).then(user => cb(user, false))
       } else {
-        console.log(`User with email ${obj.email} already exists`);
+        cb(null, true)
       }
     });
   },
@@ -130,7 +131,7 @@ var dbHelpers = {
   // This will find a user and pass it to a callback,
   // which is needed for authentication to work
   findUser: (obj, cb) => {
-    User.findOne({email: obj.email}).then(user => cb(user))
+    User.findOne({where: {email: obj.email}}).then(user => cb(user))
   },
 
   // This will find a given user's Trips
@@ -146,35 +147,14 @@ var dbHelpers = {
       //find all user Trips
       user.getTrips().then(userTrips => {
         cb(userTrips);
-
-
-
-        // //for each trip, create an output object
-        // userTrips.forEach(userTrip => {
-        //   var counter = 0;
-        //   var small = {
-        //     trip: userTrip,
-        //     events: [],
-        //     restaurants: []
-        //   }
-
-        //   //then find all events and add to output object
-        //   userTrip.getEvents()
-        //   .then( tripEvents => small.events = tripEvents).then( () => {
-        //     userTrip.getRestaurants()
-        //     .then( tripRestaurants => small.restaurants = tripRestaurants)
-        //       .then(() => output.push(small)).then( () => {
-        //         counter += 1;
-        //         if (counter === userTrips.length) {
-        //           cb(output);
-        //         }
-        //       })
-        //   })
-        // })
       })
     })
   },
 
+  // This will get all trip items
+  // (Events & Restaurants) when
+  // given a Trip ID, which you can technically
+  // only get when passing a
   getTripItems: (tripId, cb) => {
     Trip.findOne({where: {id: tripId}}).then(trip => {
       output = {
@@ -194,52 +174,59 @@ var dbHelpers = {
   // This will create a new Trip
   // and save all associated Events
   // & Restaurants to the Database
-  newTrip: (obj) => {
+  newTrip: (email, obj) => {
 
-    User.findOne({where: obj.user.email}).then(user => {
+    User.findOne({where: {email: email}}).then(user => {
 
 
       //create the Trip
       user.createTrip({
         start_date: obj.trip.startDate,
         end_date: obj.trip.endDate,
-        name: obj.trip.name
+        tripName: obj.trip.name
       }).then(trip => {
 
-        //create the Events
-        obj.eventList.forEach(event => {
-          var tempEvent = Event.define({
-            name: event.name,
-            eventURL: event.url,
-            eventImg: event.images[0].url,
-            start_date: event.dates.start.dateTime,
-            venueName: event._embedded.venues[0].name,
-            venueLong: event._embedded.venues[0].location.longitude,
-            venueLat: event._embedded.venues[0].location.latitude,
-            venueAddress: `${event._embedded.venues[0].address.line1}, ${event._embedded.venues[0].city.name}, ${event._embedded.venues[0].state.stateCode} ${event._embedded.venues[0].postalCode}`
+        //create the Events if they exist
+        if (obj.eventList !== undefined) {
+          obj.eventList.forEach(event => {
+            var tempEvent = Event.build({
+              name: event.name,
+              eventURL: event.url,
+              eventImg: event.images[0].url,
+              start_date: event.dates.start.dateTime,
+              venueName: event._embedded.venues[0].name,
+              venueLong: event._embedded.venues[0].location.longitude,
+              venueLat: event._embedded.venues[0].location.latitude,
+              venueAddress: `${event._embedded.venues[0].address.line1}, ${event._embedded.venues[0].city.name}, ${event._embedded.venues[0].state.stateCode} ${event._embedded.venues[0].postalCode}`
+            })
+
+            tempEvent.setTrip(trip, {save: false});
+            tempEvent.save();
           })
 
-          tempEvent.setTrip(trip, {save: false});
-          tempEvent.save();
-        })
+        }
 
-        //create the Restaurants
-        obj.restaurantList.forEach(restaurant => {
-          var tempRest = Restaurant.define({
-            name: restaurant.name,
-            yelpURL: restaurant.url,
-            review_count: restaurant.review_count,
-            rating: restaurant.rating,
-            price: restaurant.price,
-            restLong: restaurant.coordinates.longitude,
-            restLat: restaurant.coordinates.latitude,
-            categories: restaurant.categories,
-            display_address: restaurant.location.display_address,
-            image_url: restaurant.image_url
+        //create the Restaurants if they exist
+        if (obj.restaurantList !== undefined) {
+          obj.restaurantList.forEach(restaurant => {
+            console.log(Restaurant)
+            var tempRest = Restaurant.build({
+              name: restaurant.name,
+              yelpURL: restaurant.url,
+              review_count: restaurant.review_count,
+              rating: restaurant.rating,
+              price: restaurant.price,
+              restLong: restaurant.coordinates.longitude,
+              restLat: restaurant.coordinates.latitude,
+              categories: restaurant.categories,
+              display_address: restaurant.location.display_address,
+              image_url: restaurant.image_url
+            })
+            tempRest.setTrip(trip, {save: false});
+            tempRest.save();
           })
-          tempRest.setTrip(trip, {save: false});
-          tempRest.save();
-        })
+
+        }
       })
     })
   },
@@ -252,7 +239,8 @@ var dbHelpers = {
     //create test user
     var testUser = User.build({
       email: 'ted.green@test.com',
-      password: 'abc123'
+      password: '$2a$10$DmNvl3i1xAY7FDhHwZGsT.HQh7EBsm1BetQEpBC2PPKKKV6l252UW',
+      salt: '$2a$10$DmNvl3i1xAY7FDhHwZGsT.w'
     });
 
     //save test user
@@ -338,6 +326,10 @@ var dbHelpers = {
   // to be restarted to recreate the database tables again
   dropTables: () => {
     return db.drop();
+  },
+
+  createDB: () => {
+    User.sync().then(() => Trip.sync().then(() => Restaurant.sync().then(() => Event.sync())));
   }
 }
 

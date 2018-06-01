@@ -1,5 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const session = require('client-sessions');
+const bcrypt = require('bcrypt-nodejs')
+
 
 const db = require('../database');
 const tm = require('../helpers/tm');
@@ -10,6 +13,21 @@ const PORT = 3000;
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+app.use(session({
+  cookieName: 'session', // cookie name dictates the key name added to the request object
+  secret: 'thisthingissupersecretandunguessable', // should be a large unguessable string
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
+  cookie: {
+    // path: '/api', // cookie will only be sent to requests under '/api'
+    maxAge: 60 * 60 * 1000, // duration of the cookie in milliseconds, defaults to duration above
+    ephemeral: false, // when true, cookie expires when the browser closes
+    httpOnly: true, // when true, cookie is not accessible from javascript
+    secure: false
+  }
+}));
+
 const homePath = __dirname + '/../client/dist';
 app.use(express.static(homePath));
 
@@ -36,6 +54,11 @@ app.get('/cleardb', (req, res) => {
 app.get('/dropdb', (req, res) => {
   db.dropTables();
   res.status(200).end('Tables deleted, restart server to recreate')
+})
+
+app.get('/createdb', (req, res) => {
+  db.createDB();
+  res.status(200).end('Tables created')
 })
 
 /////////////////////////////////////////////////////////////////////
@@ -65,7 +88,7 @@ app.get('/events', (req, res) => {
 
 // Get restaurants from Yelp API
 app.get('/restaurants/:location', (req, res) => {
-  console.log(req.params.location);
+  // console.log(req.params.location);
   yelp.getRestaurants(req.params.location, data => {
     parsedData = JSON.parse(data);
     // console.log('parsedData', parsedData);
@@ -75,7 +98,12 @@ app.get('/restaurants/:location', (req, res) => {
 
 // Get saved trips from database for a registered user
 app.get('/trips', (req, res) => {
-  db.getUserTrips({email: 'ted.green@test.com'}, (obj) => res.status(200).end(JSON.stringify(obj)));
+  console.log(req.session)
+  if (req.session.user !== null) {
+    db.getUserTrips({email: req.session.user}, (obj) => res.status(200).end(JSON.stringify(obj)))
+  } else {
+    console.log('must be logged in to get trips')
+  }
 });
 
 app.get('/trips/:id', (req, res) => {
@@ -86,7 +114,6 @@ app.post('/trips', (req, res) => {
 
   /*
     sampleObject = {
-      user: {email: something},
       trip: {
         startDate: date,
         endDate: date,
@@ -105,8 +132,65 @@ app.post('/trips', (req, res) => {
     }
   */
 
-  db.newTrip(req.body)
-  res.status(200).end('successfully added trip')
+  if (req.session.user){
+    // db.newTrip(req.body)
+    // res.status(200).end('successfully added trip')
+
+    db.newTrip(req.session.user, req.body)
+    res.status(200).end('successfully added trip')
+
+  } else {
+    res.status(500).end('error')
+  }
+})
+
+app.post('/login', (req, res) => {
+  let email = req.body.email;
+  let enteredPassword = req.body.email;
+
+  db.findUser(req.body, found => {
+    if (found) {
+      let salt = found.dataValues.salt;
+      bcrypt.hash(enteredPassword, salt, null, (err, encryptedPass) => {
+        if (found.dataValues.password === encryptedPass) {
+          req.session.user = found.dataValues.email;
+          delete req.session.password;
+          res.status(200).send(JSON.stringify(found.dataValues.email));
+        } else {
+          res.status(500).send('incorrect password').redirect('signup');
+        }
+      })
+    } else {
+      console.log('User Doesn\'t Exist');
+    }
+  })
+})
+
+app.post('/signup', (req, res) => {
+  let email = req.body.email;
+  let enteredPassword = req.body.email;
+
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(enteredPassword, salt, null, (err, hashedPass) => {
+      db.addUser({
+        email: req.body.email,
+        password: hashedPass,
+        salt: salt
+      }, (addedUser, error) => {
+        if (error === true) {
+          res.status(500).end('User already exists');
+        } else if (addedUser) {
+          req.session.user = addedUser.dataValues.email;
+          delete req.session.password;
+          res.status(200).end(JSON.stringify(addedUser.email));
+        }
+      })
+    })
+  })
+})
+
+app.post('/logout', (req, res) => {
+  req.session.reset();
 })
 
 app.listen(process.env.PORT !== undefined ? process.env.PORT : PORT, () => {
