@@ -34,7 +34,7 @@ class App extends React.Component {
     this.setState({endDate: event.target.value});
    }
 
-  loginUser(email, password) {
+  loginUser(email, password, history) {
     console.log('email: ', email);
     console.log('password: ', password);
 
@@ -45,6 +45,7 @@ class App extends React.Component {
       success: (data) => {
         this.setState({ user: data })
         console.log('here is the data for user: ', data)
+        history.push('/')
       },
       error: (err) => {
         console.log(err);
