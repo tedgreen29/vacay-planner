@@ -4,14 +4,10 @@ import LandingPageBody from './LandingPageBody.jsx';
 
 const LandingPage = (props) => (
   <div>
-    <NavBar />
-    <LandingPageBody 
-      history={props.history}
-      startDate={props.startDate} 
-      endDate={props.endDate}
-      onStartChange={props.onStartChange}
-      onEndChange={props.onEndChange} 
-    />
+
+    <NavBar user={props.user} />
+    <LandingPageBody history={props.history} handleLocationChange={props.handleLocationChange} handleStartDayChange={props.handleStartDayChange} handleEndDayChange={props.handleEndDayChange} handleLogout={props.handleLogout}/>
+
   </div>
 );
 
