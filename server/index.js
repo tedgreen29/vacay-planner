@@ -90,7 +90,7 @@ app.get('/events', (req, res) => {
 
 // Get restaurants from Yelp API
 app.get('/restaurants/:location', (req, res) => {
-  // console.log(req.params.location);
+  console.log(JSON.stringify(req.params));
   yelp.getRestaurants(req.params.location, data => {
     parsedData = JSON.parse(data);
     // console.log('parsedData', parsedData);
@@ -100,7 +100,6 @@ app.get('/restaurants/:location', (req, res) => {
 
 // Get saved trips from database for a registered user
 app.get('/trips', (req, res) => {
-  console.log(req.session)
   if (req.session.user !== null) {
     db.getUserTrips({email: req.session.user}, (obj) => res.status(200).end(JSON.stringify(obj)))
   } else {
