@@ -18,7 +18,8 @@ class App extends React.Component {
       user: null,
       location: '',
       startDate: new Date(),
-      endDate: new Date()
+      endDate: new Date(),
+      address: '' 
     };
     this.loginUser = this.loginUser.bind(this);
     this.signUpUser = this.signUpUser.bind(this);
@@ -70,7 +71,8 @@ class App extends React.Component {
 
   handleLocationChange(e) {
     this.setState({
-      location: e.target.value
+      location: e,
+      address: e
     })
   }
 
@@ -86,7 +88,12 @@ class App extends React.Component {
     this.setState({user: null})
   }
 
-
+  handleSelect(location) {
+    geocodeByAddress(location)
+      .then(results => getLatLng(results[0]))
+      .then(latLng => console.log('Success', latLng))
+      .catch(error => console.error('Error', error))
+  }
 
   render() {
     return (
@@ -94,7 +101,10 @@ class App extends React.Component {
         <div className='container'>
           <Route exact path='/' render={(props) => {
             return (
-              <LandingPage handleLocationChange={this.handleLocationChange} handleStartDayChange={this.handleStartDayChange} handleEndDayChange={this.handleEndDayChange} user={this.state.user} handleLogout={this.handleLogout}{...props} />
+              <LandingPage handleLocationChange={this.handleLocationChange} handleStartDayChange={this.handleStartDayChange} 
+                handleEndDayChange={this.handleEndDayChange} user={this.state.user} handleLogout={this.handleLogout}{...props} 
+                handleChange={this.handleChange} handleSelect={this.handleSelect} address={this.state.address}
+              />
             )} }/>
           <Route path='/login' render={(props) => {
             return (
