@@ -10,7 +10,7 @@ const FoodAndEventsSidebar = (props) => {
             menuItem: 'Favorites', render: () => (
                 <Tab.Pane>
                     <Input focus placeholder="Enter your trip name here" value={props.tripName} onChange={props.onNameChange} /><br /><br />
-                    {props.foodFavorites.length > 0 ? <h2>Food</h2> : ""}
+                    {props.foodFavorites.length > 0 ? <h2>Restaurants</h2> : ""}
                     <Card.Group>
                         {props.foodFavorites.map((restaurant, index) => {
                             return <FavFoodCard restaurant={restaurant} key={"favfood" + restaurant.id} />;
