@@ -68,21 +68,23 @@ app.get('/createdb', (req, res) => {
 
 // Get events from Ticketmaster API
 app.get('/events', (req, res) => {
-  var testDate1 = new Date('30 May 2018 00:00 UTC').toISOString().split('.')[0]+'Z';
-  var testDate2 = new Date('30 October 2018 00:00 UTC').toISOString().split('.')[0]+'Z';
 
-  console.log(testDate1);
-  console.log(testDate2);
+  let startDate = new Date(req.query.startDate).toISOString().split('.')[0]+'Z';
+  let endDate = new Date(req.query.endDate).toISOString().split('.')[0]+'Z';
+  let location = req.query.location.split(', ')
 
-  var test = {
-    city: 'San Francisco',
-    startDate: testDate1,
-    endDate: testDate2,
-    stateCode: 'CA',
-    size: 10
+  let city = location[0];
+  let stateCode = location[1];
+
+  let options = {
+    city: city,
+    startDate: startDate,
+    endDate: endDate,
+    stateCode: stateCode,
+    size: 30
   };
 
-  tm(test, (stringified) => res.end(JSON.stringify(stringified)));
+  tm(options, (data) => res.status(200).end(JSON.stringify(data)));
 
 });
 

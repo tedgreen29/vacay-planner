@@ -77,6 +77,8 @@ class App extends React.Component {
     this.setState({ endDate: day });
   }
 
+
+
   render() {
     return (
       <Router>
@@ -93,7 +95,10 @@ class App extends React.Component {
             return (
               <SignUpPage signUpUser={this.signUpUser} {...props} />
             )} }/>
-          <Route path='/foodandevents' component={FoodAndEventsPage} />
+          <Route path='/foodandevents' render={(props) => {
+            return (
+              <FoodAndEventsPage inputLocation={this.state.location} startDate={this.state.startDate} endDate={this.state.endDate} {...props} />
+            )} }/>
           <Route path='/mytrips' component={MyTripsPage} />
         </div>
       </Router>
