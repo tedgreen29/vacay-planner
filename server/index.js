@@ -184,7 +184,6 @@ app.post('/signup', (req, res) => {
         if (error === true) {
           res.status(400).end('User already exists. Go to Login');
         } else if (addedUser) {
-          console.log('stored', addedUser.dataValues.password)
           req.session.user = addedUser.dataValues.email;
           delete req.session.password;
           res.status(200).end(JSON.stringify(addedUser.email));
