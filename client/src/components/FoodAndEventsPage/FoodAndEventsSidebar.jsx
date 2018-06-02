@@ -10,7 +10,7 @@ const FoodAndEventsSidebar = (props) => {
     {
       menuItem: 'Favorites', render: () => (
         <Tab.Pane>
-          <Input focus placeholder="Enter your trip name here" value={props.tripName} onChange={props.onNameChange} /><br /><br />
+          <Input focus placeholder="Enter your trip name" value={props.tripName} onChange={props.onNameChange} /><br /><br />
           {props.foodFavorites.length > 0 ? <h2>Restaurants</h2> : ''}
           <List celled size='large'>
             {props.foodFavorites.map((restaurant, index) => {
