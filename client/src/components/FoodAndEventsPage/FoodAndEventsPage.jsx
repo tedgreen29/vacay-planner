@@ -74,7 +74,6 @@ class FoodAndEventsPage extends React.Component {
       type: 'GET',
       url: `/restaurants/${this.props.inputLocation}`,
       success: result => {
-        console.log('rests', result)
         this.setState({
           restaurantList: result.businesses
         });
