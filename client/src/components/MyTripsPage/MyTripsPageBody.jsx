@@ -33,6 +33,7 @@ class MyTripsPageBody extends React.Component {
     this.setState({ 
       activeIndex: newIndex 
     })
+    this.updateSelection(this.state.selectedTrip)
   }
 
   updateSelection(tripId) {
