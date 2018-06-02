@@ -131,7 +131,7 @@ var dbHelpers = {
   // This will find a user and pass it to a callback,
   // which is needed for authentication to work
   findUser: (obj, cb) => {
-    User.findOne({where: {email: obj.email}}).then(user => cb(user))
+    User.findOne({where: {email: obj}}).then(user => cb(user))
   },
 
   // This will find a given user's Trips
@@ -239,8 +239,8 @@ var dbHelpers = {
     //create test user
     var testUser = User.build({
       email: 'ted.green@test.com',
-      password: '$2a$10$DmNvl3i1xAY7FDhHwZGsT.HQh7EBsm1BetQEpBC2PPKKKV6l252UW',
-      salt: '$2a$10$DmNvl3i1xAY7FDhHwZGsT.w'
+      password: '$2a$10$bXCxE6wp.goYU9iRgnPDv.L2zdkwprbfMmKJIx1x/OldDCbUE5Wny',
+      salt: '$2a$10$bXCxE6wp.goYU9iRgnPDv.'
     });
 
     //save test user

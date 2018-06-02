@@ -45,7 +45,6 @@ class LoginPage extends React.Component {
             size='large'>
               <Segment stacked>
                 <Form.Input
-                  label='email'
                   name='email'
                   value={this.state.email}
                   onChange={this.handleChange.bind(this)}
@@ -55,7 +54,6 @@ class LoginPage extends React.Component {
                   placeholder='E-mail address'
                 />
                 <Form.Input
-                  label='password'
                   name='password'
                   value={this.state.password}
                   onChange={this.handleChange.bind(this)}

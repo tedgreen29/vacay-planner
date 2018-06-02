@@ -147,40 +147,48 @@ app.post('/trips', (req, res) => {
 
 app.post('/login', (req, res) => {
   let email = req.body.email;
-  let enteredPassword = req.body.email;
+  let enteredPassword = req.body.password;
 
-  db.findUser(req.body, found => {
+  db.findUser(email, found => {
     if (found) {
       let salt = found.dataValues.salt;
+      console.log('salt', salt)
       bcrypt.hash(enteredPassword, salt, null, (err, encryptedPass) => {
-        if (found.dataValues.password === encryptedPass) {
+        console.log('encryptedPass', encryptedPass)
+        console.log('foundPass', found.dataValues.password)
+
+        if (encryptedPass === found.dataValues.password) {
           req.session.user = found.dataValues.email;
           delete req.session.password;
-          res.status(200).send(JSON.stringify(found.dataValues.email));
+          res.status(200).end(JSON.stringify(found.dataValues.email));
         } else {
-          res.status(500).send('incorrect password').redirect('signup');
+          console.log('?')
+          res.status(400).end('incorrect username or password');
         }
+
       })
     } else {
-      console.log('User Doesn\'t Exist');
+      res.status(400).end('User Doesn\'t exist. Sign up!');
     }
   })
 })
 
 app.post('/signup', (req, res) => {
   let email = req.body.email;
-  let enteredPassword = req.body.email;
+  let enteredPassword = req.body.password;
 
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(enteredPassword, salt, null, (err, hashedPass) => {
+      console.log('hashedPass', hashedPass)
       db.addUser({
         email: req.body.email,
         password: hashedPass,
         salt: salt
       }, (addedUser, error) => {
         if (error === true) {
-          res.status(500).end('User already exists');
+          res.status(400).end('User already exists. Go to Login');
         } else if (addedUser) {
+          console.log('stored', addedUser.dataValues.password)
           req.session.user = addedUser.dataValues.email;
           delete req.session.password;
           res.status(200).end(JSON.stringify(addedUser.email));

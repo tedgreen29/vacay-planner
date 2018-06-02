@@ -44,12 +44,12 @@ class App extends React.Component {
         history.push('/')
       },
       error: (err) => {
-        console.log(err);
+        alert(err.responseText);
       }
     })
   }
 
-  signUpUser(email, password) {
+  signUpUser(email, password, history) {
     console.log('email: ', email);
     console.log('password: ', password);
 
@@ -63,7 +63,7 @@ class App extends React.Component {
         history.push('/')
       },
       error: (err) => {
-        console.log(err);
+        alert(err.responseText);
       }
     })
   }
