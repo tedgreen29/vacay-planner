@@ -38,7 +38,7 @@ const NavBar = (props) => {
           </NavLink>
         </Menu.Item>
         <Menu.Item>
-          <NavLink to='/' onClick={() => {props.handleLogout}} activeClassName='active'>
+          <NavLink to='/' onClick={() => {props.handleLogout()}} activeClassName='active'>
             Log Out
           </NavLink>
         </Menu.Item>
