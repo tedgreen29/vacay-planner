@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Icon, Grid, Form, Button, Segment, Header } from 'semantic-ui-react';
+import { Card, Grid, Form, Button, Segment, Header } from 'semantic-ui-react';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import MomentLocaleUtils, {formatDate, parseDate} from 'react-day-picker/moment';
 import LocationSearchInput from './LocationSearchInput.jsx';

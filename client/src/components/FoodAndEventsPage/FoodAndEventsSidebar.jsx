@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Image, Icon, Input, Segment, Tab, Item, Divider, List } from 'semantic-ui-react';
+import { Button, Card, Input, Tab, Item, List } from 'semantic-ui-react';
 import { withRouter } from "react-router-dom";
 
 import FavFoodCard from './FavFoodCard.jsx';

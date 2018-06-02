@@ -1,6 +1,6 @@
 import React from 'react';
 import SaveButton from '../Buttons/SaveButton.jsx';
-import { Button, Card, Image, Icon, Item, Segment } from 'semantic-ui-react';
+import { Button, Card, Image, Icon, Item } from 'semantic-ui-react';
 
 const FoodTabContent = (props) => (
   <div>
