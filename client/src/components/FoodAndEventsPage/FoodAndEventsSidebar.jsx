@@ -24,7 +24,16 @@ const FoodAndEventsSidebar = (props) => {
           </List>
           {props.foodFavorites.length + props.eventFavorites.length === 0 ? '' : (
             <div>
-              <Button onClick={props.saveTrip}>Save to My Trips</Button>
+              {
+                props.user !== null ? <Button onClick={props.saveTrip} content='Save to My Trips' fluid />
+                :
+                <div>
+                  <Button onClick={() => {}} color='blue' fluid content='Login to Save' />
+                  <hr />
+                  <Button onClick={() => {}} fluid content='Not a member? Sign Up' />
+                </div>
+              }
+
             </div>
           )}
         </Tab.Pane>

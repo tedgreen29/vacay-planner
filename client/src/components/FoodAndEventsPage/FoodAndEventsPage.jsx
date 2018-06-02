@@ -11,7 +11,6 @@ class FoodAndEventsPage extends React.Component {
 
     this.state = {
       restaurantList: [],
-      // location: 'San Francisco',
       eventsList: [],
       foodFavorites: [],
       eventFavorites: [],
@@ -66,20 +65,14 @@ class FoodAndEventsPage extends React.Component {
   }
 
   componentDidMount() {
-    console.log({
-      startDate: this.props.startDate,
-      endDate: this.props.endDate,
-      location: this.props.inputLocation
-    })
-    this.getRestaurantsByLocation(this.props.location);
+    this.getRestaurantsByLocation();
     this.getEventsByLocationAndDate();
   }
 
-  getRestaurantsByLocation(location) {
-    console.log('test!!')
+  getRestaurantsByLocation() {
     $.ajax({
       type: 'GET',
-      url: `/restaurants/${location}`,
+      url: `/restaurants/${this.props.inputLocation}`,
       success: result => {
         this.setState({
           restaurantList: result.businesses
@@ -89,7 +82,6 @@ class FoodAndEventsPage extends React.Component {
   }
 
   getEventsByLocationAndDate() {
-    console.log('events test!!')
     $.ajax({
       type: 'GET',
       url: `/events`,
@@ -114,7 +106,7 @@ class FoodAndEventsPage extends React.Component {
         <Grid.Row>
           <Grid.Column floated="right">
             <NavBar
-            user={this.props.user}
+            user={this.props.user} handleLogout={this.props.handleLogout}
             />
           </Grid.Column>
         </Grid.Row>
@@ -130,6 +122,7 @@ class FoodAndEventsPage extends React.Component {
           </Grid.Column>
           <Grid.Column width={6}>
             <FoodAndEventsSidebar
+              user={this.props.user}
               foodFavorites={this.state.foodFavorites}
               eventFavorites={this.state.eventFavorites}
               saveTrip={this.saveTrip}

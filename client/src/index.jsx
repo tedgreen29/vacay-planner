@@ -8,7 +8,6 @@ import LandingPage from './components/LandingPage/LandingPage.jsx';
 import SignUpPage from './components/SignUpPage/SignUpPage.jsx';
 import LoginPage from './components/LoginPage/LoginPage.jsx';
 import MyTripsPage from './components/MyTripsPage/MyTripsPage.jsx';
-import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 
 const Router = BrowserRouter;
 
@@ -19,8 +18,7 @@ class App extends React.Component {
       user: null,
       location: '',
       startDate: new Date(),
-      endDate: new Date(),
-      address: '' 
+      endDate: new Date()
     };
     this.loginUser = this.loginUser.bind(this);
     this.signUpUser = this.signUpUser.bind(this);
@@ -43,16 +41,15 @@ class App extends React.Component {
       dataType: 'json',
       success: (data) => {
         this.setState({ user: data })
-        console.log('here is the data for user: ', data)
         history.push('/')
       },
       error: (err) => {
-        console.log(err);
+        alert(err.responseText);
       }
     })
   }
 
-  signUpUser(email, password) {
+  signUpUser(email, password, history) {
     console.log('email: ', email);
     console.log('password: ', password);
 
@@ -63,17 +60,17 @@ class App extends React.Component {
       dataType: 'json',
       success: (data) => {
         this.setState({ user: data })
+        history.push('/')
       },
       error: (err) => {
-        console.log(err);
+        alert(err.responseText);
       }
     })
   }
 
   handleLocationChange(e) {
     this.setState({
-      location: e,
-      address: e
+      location: e.target.value
     })
   }
 
@@ -86,14 +83,8 @@ class App extends React.Component {
   }
 
   handleLogout() {
+    console.log(document.cookie)
     this.setState({user: null})
-  }
-
-  handleSelect(location) {
-    geocodeByAddress(location)
-      .then(results => getLatLng(results[0]))
-      .then(latLng => console.log('Success', latLng))
-      .catch(error => console.error('Error', error))
   }
 
   render() {
@@ -102,10 +93,7 @@ class App extends React.Component {
         <div className='container'>
           <Route exact path='/' render={(props) => {
             return (
-              <LandingPage handleLocationChange={this.handleLocationChange} handleStartDayChange={this.handleStartDayChange} 
-                handleEndDayChange={this.handleEndDayChange} user={this.state.user} handleLogout={this.handleLogout}{...props} 
-                handleChange={this.handleChange} handleSelect={this.handleSelect} address={this.state.address}
-              />
+              <LandingPage handleLocationChange={this.handleLocationChange} handleStartDayChange={this.handleStartDayChange} handleEndDayChange={this.handleEndDayChange} user={this.state.user} handleLogout={this.handleLogout} {...props} />
             )} }/>
           <Route path='/login' render={(props) => {
             return (
@@ -117,7 +105,7 @@ class App extends React.Component {
             )} }/>
           <Route path='/foodandevents' render={(props) => {
             return (
-              <FoodAndEventsPage inputLocation={this.state.location} startDate={this.state.startDate} endDate={this.state.endDate} user={this.state.user} {...props} />
+              <FoodAndEventsPage inputLocation={this.state.location} startDate={this.state.startDate} endDate={this.state.endDate} user={this.state.user} handleLogout={this.handleLogout} {...props} />
             )} }/>
           <Route path='/mytrips' render={(props) => {
             return (
