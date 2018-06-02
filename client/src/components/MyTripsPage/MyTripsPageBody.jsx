@@ -65,7 +65,7 @@ class MyTripsPageBody extends React.Component {
         JSON.parse(result).length ?
           (
             this.setState({
-              selectedTrip: JSON.parse(result)[0],
+              selectedTrip: JSON.parse(result)[0].id,
               allTrips: JSON.parse(result)
             })
           )
