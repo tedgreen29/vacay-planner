@@ -61,6 +61,7 @@ class App extends React.Component {
       dataType: 'json',
       success: (data) => {
         this.setState({ user: data })
+        history.push('/')
       },
       error: (err) => {
         console.log(err);

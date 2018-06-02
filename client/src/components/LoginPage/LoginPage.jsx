@@ -41,7 +41,7 @@ class LoginPage extends React.Component {
               {' '}Log-in to your account
             </Header>
             <Form
-            onSubmit={() => this.props.loginUser(this.state.email, this.state.password) }
+            onSubmit={() => this.props.loginUser(this.state.email, this.state.password, this.props.history) }
             size='large'>
               <Segment stacked>
                 <Form.Input

@@ -37,7 +37,7 @@ class SignUpPage extends React.Component {
             <Header as='h2' color='blue' textAlign='center'>
               {' '}Create an account
             </Header>
-            <Form onSubmit={() => this.props.signUpUser(this.state.email, this.state.password)} size='large'>
+            <Form onSubmit={() => this.props.signUpUser(this.state.email, this.state.password, this.props.history)} size='large'>
               <Segment stacked>
                 <Form.Input
                   fluid
