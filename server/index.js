@@ -152,10 +152,7 @@ app.post('/login', (req, res) => {
   db.findUser(email, found => {
     if (found) {
       let salt = found.dataValues.salt;
-      console.log('salt', salt)
       bcrypt.hash(enteredPassword, salt, null, (err, encryptedPass) => {
-        console.log('encryptedPass', encryptedPass)
-        console.log('foundPass', found.dataValues.password)
 
         if (encryptedPass === found.dataValues.password) {
           req.session.user = found.dataValues.email;
@@ -179,7 +176,6 @@ app.post('/signup', (req, res) => {
 
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(enteredPassword, salt, null, (err, hashedPass) => {
-      console.log('hashedPass', hashedPass)
       db.addUser({
         email: req.body.email,
         password: hashedPass,
