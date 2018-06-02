@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Card, Image, Icon, Input, Segment, Tab, Item, Divider, List } from 'semantic-ui-react';
+import { withRouter } from "react-router-dom";
 
 import FavFoodCard from './FavFoodCard.jsx';
 import FavEventCard from './FavEventCard.jsx';
@@ -28,9 +29,9 @@ const FoodAndEventsSidebar = (props) => {
                 props.user !== null ? <Button onClick={props.saveTrip} content='Save to My Trips' fluid />
                 :
                 <div>
-                  <Button onClick={() => {}} color='blue' fluid content='Login to Save' />
+                  <Button onClick={() => {props.history.push('/login')}} color='blue' fluid content='Login to Save' />
                   <hr />
-                  <Button onClick={() => {}} fluid content='Not a member? Sign Up' />
+                  <Button onClick={() => {props.history.push('/signup')}} fluid content='Not a member? Sign Up' />
                 </div>
               }
 
@@ -43,5 +44,5 @@ const FoodAndEventsSidebar = (props) => {
   return <Tab panes={panes} />;
 }
 
-export default FoodAndEventsSidebar;
+export default withRouter(FoodAndEventsSidebar);
 
