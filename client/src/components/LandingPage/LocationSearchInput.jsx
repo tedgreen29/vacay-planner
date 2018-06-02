@@ -24,7 +24,7 @@ function LocationSearchInput(props) {
                   : { backgroundColor: '#ffffff', cursor: 'pointer' };
                 return (
                   <div {...getSuggestionItemProps(suggestion, { className, style })}>
-                    {console.log('suggestion.description', suggestion.description)}
+                    {/* {console.log('suggestion.description', suggestion.description)} */}
                     <span>{suggestion.description}</span>
                   </div>
                 )
