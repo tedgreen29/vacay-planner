@@ -23,7 +23,7 @@ app.use(session({
     // path: '/api', // cookie will only be sent to requests under '/api'
     maxAge: 60 * 60 * 1000, // duration of the cookie in milliseconds, defaults to duration above
     ephemeral: false, // when true, cookie expires when the browser closes
-    httpOnly: true, // when true, cookie is not accessible from javascript
+    httpOnly: false, // when true, cookie is not accessible from javascript
     secure: false
   }
 }));

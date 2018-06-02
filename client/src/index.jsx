@@ -83,6 +83,7 @@ class App extends React.Component {
   }
 
   handleLogout() {
+    console.log(document.cookie)
     this.setState({user: null})
   }
 
@@ -94,7 +95,7 @@ class App extends React.Component {
         <div className='container'>
           <Route exact path='/' render={(props) => {
             return (
-              <LandingPage handleLocationChange={this.handleLocationChange} handleStartDayChange={this.handleStartDayChange} handleEndDayChange={this.handleEndDayChange} user={this.state.user} handleLogout={this.handleLogout}{...props} />
+              <LandingPage handleLocationChange={this.handleLocationChange} handleStartDayChange={this.handleStartDayChange} handleEndDayChange={this.handleEndDayChange} user={this.state.user} handleLogout={this.handleLogout} {...props} />
             )} }/>
           <Route path='/login' render={(props) => {
             return (
@@ -106,7 +107,7 @@ class App extends React.Component {
             )} }/>
           <Route path='/foodandevents' render={(props) => {
             return (
-              <FoodAndEventsPage inputLocation={this.state.location} startDate={this.state.startDate} endDate={this.state.endDate} user={this.state.user} {...props} />
+              <FoodAndEventsPage inputLocation={this.state.location} startDate={this.state.startDate} endDate={this.state.endDate} user={this.state.user} handleLogout={this.handleLogout} {...props} />
             )} }/>
           <Route path='/mytrips' render={(props) => {
             return (
