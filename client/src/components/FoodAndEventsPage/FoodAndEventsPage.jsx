@@ -59,9 +59,17 @@ class FoodAndEventsPage extends React.Component {
       method: 'POST',
       url: '/trips',
       data: data,
-      success: (data) => {console.log(data)},
+      success: (data) => {
+        console.log(data);
+      },
       error: (err) => {console.log(err)},
-      dataType: 'json'})
+      dataType: 'json'
+    })
+    this.setState({
+      foodFavorites: [],
+      eventFavorites: [],
+      tripName: ""
+    });
   }
 
   componentDidMount() {
