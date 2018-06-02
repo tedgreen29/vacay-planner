@@ -72,9 +72,8 @@ app.get('/events', (req, res) => {
   let startDate = new Date(req.query.startDate).toISOString().split('.')[0]+'Z';
   let endDate = new Date(req.query.endDate).toISOString().split('.')[0]+'Z';
   let location = req.query.location.split(', ')
-
-  let city = location[0];
-  let stateCode = location[1];
+  let city = location[location.length - 3];
+  let stateCode = location[location.length - 2];
 
   let options = {
     city: city,
@@ -90,10 +89,8 @@ app.get('/events', (req, res) => {
 
 // Get restaurants from Yelp API
 app.get('/restaurants/:location', (req, res) => {
-  console.log(JSON.stringify(req.params));
   yelp.getRestaurants(req.params.location, data => {
     parsedData = JSON.parse(data);
-    // console.log('parsedData', parsedData);
     res.status(200).send((parsedData));
   }, req.params.location)
 });
@@ -159,7 +156,6 @@ app.post('/login', (req, res) => {
           delete req.session.password;
           res.status(200).end(JSON.stringify(found.dataValues.email));
         } else {
-          console.log('?')
           res.status(400).end('incorrect username or password');
         }
 
