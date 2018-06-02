@@ -110,7 +110,7 @@ class FoodAndEventsPage extends React.Component {
         <Grid.Row>
           <Grid.Column floated="right">
             <NavBar
-            user={this.props.user}
+            user={this.props.user} handleLogout={this.props.handleLogout}
             />
           </Grid.Column>
         </Grid.Row>

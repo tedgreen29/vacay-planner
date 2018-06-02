@@ -41,11 +41,10 @@ class LoginPage extends React.Component {
               {' '}Log-in to your account
             </Header>
             <Form
-            onSubmit={() => this.props.loginUser(this.state.email, this.state.password) }
+            onSubmit={() => this.props.loginUser(this.state.email, this.state.password, this.props.history) }
             size='large'>
               <Segment stacked>
                 <Form.Input
-                  label='email'
                   name='email'
                   value={this.state.email}
                   onChange={this.handleChange.bind(this)}
@@ -55,7 +54,6 @@ class LoginPage extends React.Component {
                   placeholder='E-mail address'
                 />
                 <Form.Input
-                  label='password'
                   name='password'
                   value={this.state.password}
                   onChange={this.handleChange.bind(this)}
