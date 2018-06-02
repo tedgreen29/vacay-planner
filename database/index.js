@@ -239,8 +239,8 @@ var dbHelpers = {
     //create test user
     var testUser = User.build({
       email: 'ted.green@test.com',
-      password: '$2a$10$bXCxE6wp.goYU9iRgnPDv.L2zdkwprbfMmKJIx1x/OldDCbUE5Wny',
-      salt: '$2a$10$bXCxE6wp.goYU9iRgnPDv.'
+      password: '$2a$10$flgD5OmkK2cwd/7CddCOW.Ujd30tqTb4r02bYVfYuI/GlwKw5gNt.',
+      salt: '$2a$10$flgD5OmkK2cwd/7CddCOW.'
     });
 
     //save test user
