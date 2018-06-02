@@ -19,7 +19,6 @@ class FoodAndEventsPage extends React.Component {
     this.toggleFavorite = this.toggleFavorite.bind(this);
     this.saveTrip = this.saveTrip.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleRouteLogin = this.handleRouteLogin.bind(this);
   }
 
   toggleFavorite(listIndex, listName) {
