@@ -22,11 +22,6 @@ class FoodAndEventsPage extends React.Component {
     this.handleRouteLogin = this.handleRouteLogin.bind(this);
   }
 
-  handleRouteLogin() {
-    console.log('10001010')
-    // this.props.history
-  }
-
   toggleFavorite(listIndex, listName) {
     if (listName === 'food') {
       let selectedFood = this.state.restaurantList[listIndex];
@@ -128,7 +123,6 @@ class FoodAndEventsPage extends React.Component {
           </Grid.Column>
           <Grid.Column width={6}>
             <FoodAndEventsSidebar
-              handleRouteLogin={this.handleRouteLogin}
               user={this.props.user}
               foodFavorites={this.state.foodFavorites}
               eventFavorites={this.state.eventFavorites}
