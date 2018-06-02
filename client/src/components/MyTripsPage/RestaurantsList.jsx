@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { Menu, Image, Item, Header, Card, Button, Label, Icon } from 'semantic-ui-react';
+import { Image, Item, Header, Card, Icon } from 'semantic-ui-react';
 
 function RestaurantsList(props) {
   return (

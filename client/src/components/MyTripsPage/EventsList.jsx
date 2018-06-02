@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { Menu, Image, Item, Header, Card, Button, Label } from 'semantic-ui-react';
+import { Image, Item, Header, Card, Label } from 'semantic-ui-react';
 
 function EventsList(props) {
   return (
@@ -33,8 +33,8 @@ function EventsList(props) {
               </Item>
             </Item.Group>
           </Card>
-        )
-      })}
+        )})
+      }
     </div>
   )
 }

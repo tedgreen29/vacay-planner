@@ -102,7 +102,7 @@ class FoodAndEventsPage extends React.Component {
   render() {
     return (
       //Column width must add up to 16
-      <Grid>
+      <Grid style={ {marginTop: 50} }>
         <Grid.Row>
           <Grid.Column floated="right">
             <NavBar

@@ -33,6 +33,7 @@ class MyTripsPageBody extends React.Component {
     this.setState({ 
       activeIndex: newIndex 
     })
+    this.updateSelection(this.state.selectedTrip)
   }
 
   updateSelection(tripId) {
@@ -62,11 +63,14 @@ class MyTripsPageBody extends React.Component {
       type: 'GET',
       url: `/trips`,
       success: result => {
-        let curretTrip = JSON.parse(result)[0].id;
-        this.setState({
-          selectedTrip: curretTrip,
-          allTrips: JSON.parse(result)
-        })
+        JSON.parse(result).length ?
+          (
+            this.setState({
+              selectedTrip: JSON.parse(result)[0].id,
+              allTrips: JSON.parse(result)
+            })
+          )
+          : ''
       }
     })
   }
@@ -83,26 +87,31 @@ class MyTripsPageBody extends React.Component {
               onSelect = {this.updateSelection}
             />
           </Grid.Column>
-          <Grid.Column floated='right' width={13}>
-            <Accordion fluid styled>
-              <Accordion.Title style={ { color: '#d0021b', fontSize: 20} } active={activeIndex === 0} index={0} onClick={this.handleClick.bind(this)}>
-                <Icon name='dropdown'/>
-                Saved Events
-              </Accordion.Title>
-              <Accordion.Content active={activeIndex === 0}>
-                <p> </p>
-                {!this.state.eventsSelected.length ? <p>No Saved Events</p> : <EventsList eventsSelected={this.state.eventsSelected}/>}
-              </Accordion.Content>
-              <Accordion.Title style={ { color: '#d0021b', fontSize: 20} } active={activeIndex === 1} index={1} onClick={this.handleClick.bind(this)}>
-                <Icon name='dropdown' />
-                Saved Restaurants
-              </Accordion.Title>
-              <Accordion.Content active={activeIndex === 1}>
-                <p> </p>
-                {!this.state.restaurantsSelected.length ? <p>No Saved Restaurants</p> : <RestaurantsList restaurantsSelected={this.state.restaurantsSelected}/>}
-              </Accordion.Content>
-            </Accordion>
-          </Grid.Column>
+          {this.state.allTrips.length ?
+            (
+              <Grid.Column floated='right' width={13}>
+                <Accordion fluid styled>
+                  <Accordion.Title style={ { color: '#d0021b', fontSize: 20} } active={activeIndex === 0} index={0} onClick={this.handleClick.bind(this)}>
+                    <Icon name='dropdown'/>
+                    Saved Events
+                  </Accordion.Title>
+                  <Accordion.Content active={activeIndex === 0}>
+                    <p> </p>
+                    {!this.state.eventsSelected.length ? <p>No Saved Events</p> : <EventsList eventsSelected={this.state.eventsSelected}/>}
+                  </Accordion.Content>
+                  <Accordion.Title style={ {color: '#d0021b', fontSize: 20} } active={activeIndex === 1} index={1} onClick={this.handleClick.bind(this)}>
+                    <Icon name='dropdown' />
+                    Saved Restaurants
+                  </Accordion.Title>
+                  <Accordion.Content active={activeIndex === 1}>
+                    <p> </p>
+                    {!this.state.restaurantsSelected.length ? <p>No Saved Restaurants</p> : <RestaurantsList restaurantsSelected={this.state.restaurantsSelected}/>}
+                  </Accordion.Content>
+                </Accordion>
+              </Grid.Column>
+            ) 
+          : 
+            (<span style={ {color: '#d0021b', fontSize: 30, align: 'center', marginRight: 450, marginTop: 50} }> No Saved Trips </span>)}
         </Grid>
       </div>
     )

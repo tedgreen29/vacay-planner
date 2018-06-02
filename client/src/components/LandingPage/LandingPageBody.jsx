@@ -1,11 +1,11 @@
 import React from 'react';
-import { Card, Icon, Grid, Form, Button, Segment, Header } from 'semantic-ui-react';
+import { Card, Grid, Form, Button, Segment, Header } from 'semantic-ui-react';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import MomentLocaleUtils, {formatDate, parseDate} from 'react-day-picker/moment';
 import LocationSearchInput from './LocationSearchInput.jsx';
 
 const LandingPageBody = (props) => (
-  <Grid verticalAlign="middle">
+  <Grid verticalAlign='middle' style={ {marginTop: 50} }>
     <Grid.Row>
       <Grid.Column style={{ maxWidth: 450}}>
         <Card centered fluid>

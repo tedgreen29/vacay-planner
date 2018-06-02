@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import SaveButton from '../Buttons/SaveButton.jsx';
-import { Button, Card, Image, Icon, Item, Segment, Label } from 'semantic-ui-react';
+import { Button, Card, Image, Item, Label } from 'semantic-ui-react';
 
 const EventsTabContent = (props) => (
   <div>
@@ -43,8 +43,8 @@ const EventsTabContent = (props) => (
             </Item>
           </Item.Group>
         </Card>
-      )
-    })}
+      )})
+    }
   </div>
 )
 
